@@ -689,11 +689,12 @@ class TypingPractice:
         menu.add_command(label="📄 CSV 새로 만들기", command=self.create_csv_file)
         menu.add_command(label="📥 CSV 가져오기",    command=self.import_csv)
         menu.add_separator()
-        # 선택한 CSV가 현재 로드된 파일일 때만 저장 활성화
-        p = self._get_selected_path()
-        save_state = tk.NORMAL if (p and os.path.isfile(p) and p.lower().endswith(".csv")
-                                   and p == self.current_csv) else tk.DISABLED
-        menu.add_command(label="💾 저장",            command=self._save_selected_csv,
+        # 현재 로드된 CSV가 있을 때만 저장 활성화
+        has_csv = bool(self.current_csv)
+        save_state = tk.NORMAL if has_csv else tk.DISABLED
+        menu.add_command(label="💾 저장",              command=self._save_selected_csv,
+                         state=save_state)
+        menu.add_command(label="💾 다른 이름으로 저장", command=self.save_csv_as,
                          state=save_state)
         menu.add_separator()
         menu.add_command(label="✎ 이름 변경",        command=self.rename_tree_item)
@@ -982,11 +983,46 @@ class TypingPractice:
             messagebox.showerror("저장 오류", str(e))
 
     def _save_selected_csv(self):
-        """파일 관리 드롭다운에서 선택한 CSV(= 현재 로드된 파일)를 저장한다."""
+        """현재 로드된 CSV를 같은 위치에 저장한다."""
+        if not self.current_csv:
+            return
         self._save_csv()
-        fname = os.path.basename(self.current_csv) if self.current_csv else ""
+        fname = os.path.basename(self.current_csv)
         messagebox.showinfo("저장 완료", f"'{fname}' 파일을 저장했습니다.",
                             parent=self._tree_win)
+
+    def save_csv_as(self):
+        """저장 위치를 직접 선택해서 CSV를 저장한다."""
+        if not self.current_csv:
+            return
+        dest = filedialog.asksaveasfilename(
+            title="다른 이름으로 저장",
+            initialdir=os.path.dirname(self.current_csv),
+            initialfile=os.path.basename(self.current_csv),
+            defaultextension=".csv",
+            filetypes=[("CSV 파일", "*.csv"), ("모든 파일", "*.*")],
+            parent=self._tree_win
+        )
+        if not dest:
+            return
+        try:
+            with open(dest, "w", newline="", encoding="utf-8-sig") as f:
+                w = csv.writer(f)
+                w.writerow(["text", "description", "explanation"])
+                for row in self.sentence_data:
+                    text = row[0]
+                    desc = row[1] if len(row) > 1 else ""
+                    expl = row[2] if len(row) > 2 else ""
+                    w.writerow([text, desc, expl])
+            self.current_csv = dest
+            self.load_tree()
+            fname = os.path.basename(dest)
+            self._csv_lbl.config(text=fname, fg="#2c3e50")
+            self._sent_win.title(f"문장 목록 — {fname}")
+            messagebox.showinfo("저장 완료", f"'{fname}' 파일을 저장했습니다.",
+                                parent=self._tree_win)
+        except Exception as e:
+            messagebox.showerror("저장 오류", str(e), parent=self._tree_win)
 
     # ══════════════════════════════════════════════════════════════════════════
     # 문장 목록 CRUD
