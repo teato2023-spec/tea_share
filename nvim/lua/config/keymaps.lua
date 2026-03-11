@@ -43,6 +43,9 @@ map("n", "<leader>q", ":q<CR>", { desc = "종료" })
 -- Python 저장 후 실행 (F5)
 map("n", "<F5>", ":w<CR>:split | terminal python3 %<CR>", { desc = "Python 저장 후 실행" })
 
+-- 터미널 창에서 Esc → 창 닫기
+map("t", "<Esc>", "<C-\\><C-n>:q<CR>", { desc = "터미널 닫기" })
+
 -- 플러그인별 키맵 로드
 require("keymaps.nvim-tree")
 require("keymaps.nvim-cmp")
