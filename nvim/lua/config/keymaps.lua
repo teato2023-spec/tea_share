@@ -40,8 +40,19 @@ end
 map("n", "<leader>w", ":w<CR>", { desc = "저장" })
 map("n", "<leader>q", ":q<CR>", { desc = "종료" })
 
--- Python 저장 후 실행 (F5)
-map("n", "<F5>", ":w<CR>:split | terminal python3 %<CR>", { desc = "Python 저장 후 실행" })
+-- Python 저장 후 실행 (F5) - 종료 시 창 자동 닫기
+map("n", "<F5>", function()
+  vim.cmd("w")
+  vim.cmd("split")
+  vim.cmd("terminal python3 " .. vim.fn.expand("%"))
+  vim.api.nvim_create_autocmd("TermClose", {
+    buffer = vim.api.nvim_get_current_buf(),
+    once = true,
+    callback = function()
+      vim.cmd("bdelete!")
+    end,
+  })
+end, { desc = "Python 저장 후 실행" })
 
 -- 터미널 창에서 Esc → 창 닫기
 map("t", "<Esc>", "<C-\\><C-n>:q<CR>", { desc = "터미널 닫기" })
