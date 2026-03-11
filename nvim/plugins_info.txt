@@ -1,0 +1,93 @@
+================================================================
+                  Neovim 플러그인 목록
+================================================================
+
+[ UI 플러그인 ]
+
+1. tokyonight.nvim  (folke/tokyonight.nvim)
+   - 컬러 테마 플러그인
+   - 현재 적용 테마: tokyonight-moon
+   - 시작 시 즉시 로드 (lazy = false, priority = 1000)
+
+2. lualine.nvim  (nvim-lualine/lualine.nvim)
+   - 하단 상태 라인 (status line)
+   - 현재 모드, 파일명, 브랜치, 커서 위치 등을 표시
+   - 테마: tokyonight
+
+3. bufferline.nvim  (akinsho/bufferline.nvim)
+   - 상단 버퍼 탭 UI
+   - 열린 파일들을 탭 형태로 표시
+
+4. nvim-tree.lua  (nvim-tree/nvim-tree.lua)
+   - 사이드바 파일 탐색기
+   - 디렉토리 트리 구조로 파일 탐색 가능
+
+5. nvim-web-devicons  (nvim-tree/nvim-web-devicons)
+   - 파일 아이콘 제공 (lualine, bufferline, nvim-tree 등에서 사용)
+   - 공통 의존성 플러그인
+
+----------------------------------------------------------------
+[ 에디터 플러그인 ]
+
+6. nvim-treesitter  (nvim-treesitter/nvim-treesitter)
+   - 정밀한 문법 강조 (syntax highlight)
+   - 코드 들여쓰기 지원
+   - 설치된 파서: lua, python, javascript, typescript, bash
+   - 파일 열 때 로드 (BufReadPre, BufNewFile)
+
+7. Comment.nvim  (numToStr/Comment.nvim)
+   - 코드 주석 토글 플러그인
+   - gcc: 한 줄 주석, gc + 범위: 여러 줄 주석
+
+8. vim-fugitive  (tpope/vim-fugitive)
+   - Git 통합 플러그인
+   - :Git 명령어로 git 작업 가능 (add, commit, push 등)
+
+9. gitsigns.nvim  (lewis6991/gitsigns.nvim)
+   - 좌측 사인 컬럼에 Git 변경사항 표시
+   - 추가(+), 수정(~), 삭제(-) 라인을 시각적으로 표시
+
+----------------------------------------------------------------
+[ 도구 플러그인 ]
+
+10. nvim-lspconfig  (neovim/nvim-lspconfig)
+    - LSP(Language Server Protocol) 클라이언트 설정
+    - 코드 분석, 정의로 이동, 호버 문서 등 제공
+
+11. mason.nvim  (williamboman/mason.nvim)
+    - LSP 서버, DAP, Linter, Formatter 설치 관리자
+    - :Mason 명령어로 GUI 설치 화면 실행
+
+12. mason-lspconfig.nvim  (williamboman/mason-lspconfig.nvim)
+    - mason과 nvim-lspconfig 연결 브릿지
+    - 자동 설치 LSP: lua_ls (Lua), pyright (Python)
+
+13. nvim-cmp  (hrsh7th/nvim-cmp)
+    - 자동완성 엔진
+    - 소스: LSP, 스니펫, 버퍼 텍스트, 파일 경로
+
+14. cmp-nvim-lsp  (hrsh7th/cmp-nvim-lsp)
+    - nvim-cmp용 LSP 자동완성 소스
+
+15. cmp-buffer  (hrsh7th/cmp-buffer)
+    - nvim-cmp용 현재 버퍼 텍스트 자동완성 소스
+
+16. cmp-path  (hrsh7th/cmp-path)
+    - nvim-cmp용 파일 경로 자동완성 소스
+
+17. LuaSnip  (L3MON4D3/LuaSnip)
+    - 스니펫 엔진
+    - 코드 템플릿 자동 확장
+
+18. cmp_luasnip  (saadparwaiz1/cmp_luasnip)
+    - nvim-cmp와 LuaSnip 연결 소스
+
+19. telescope.nvim  (nvim-telescope/telescope.nvim)
+    - 퍼지 파인더 (Fuzzy Finder)
+    - 파일, 텍스트, 버퍼, 최근 파일 등 빠른 검색
+
+20. plenary.nvim  (nvim-lua/plenary.nvim)
+    - telescope 등에서 사용하는 Lua 유틸리티 라이브러리
+    - 공통 의존성 플러그인
+
+================================================================
