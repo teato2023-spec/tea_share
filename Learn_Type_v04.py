@@ -1253,10 +1253,18 @@ class TypingPractice:
     # ══════════════════════════════════════════════════════════════════════════
 
     def _build_practice_indices(self):
-        self.practice_indices = [
-            i for i in range(len(self.sentence_data))
-            if i not in self.memorized_indices
-        ]
+        if self.typing_mode.get() == "복습":
+            today = date.today().isoformat()
+            self.practice_indices = [
+                i for i in range(len(self.sentence_data))
+                if i not in self.memorized_indices
+                and self._get_srs(self.sentence_data[i][0])["next_review"] <= today
+            ]
+        else:
+            self.practice_indices = [
+                i for i in range(len(self.sentence_data))
+                if i not in self.memorized_indices
+            ]
         if self.random_var.get():
             random.shuffle(self.practice_indices)
         self.current_index = 0
