@@ -217,14 +217,14 @@ class TypingPractice:
         tk.Label(
             self._banner_frame, text="✓ 완료!",
             bg="#27ae60", fg="white",
-            font=Font(family="Malgun Gothic", size=11, weight="bold"),
+            font=Font(family="Malgun Gothic", size=22, weight="bold"),
             padx=12, pady=5
         ).pack(side=tk.LEFT)
 
         tk.Label(
             self._banner_frame, text="Enter = 보통",
             bg="#27ae60", fg="#d5f5e3",
-            font=Font(family="Malgun Gothic", size=9),
+            font=Font(family="Malgun Gothic", size=22),
             padx=10
         ).pack(side=tk.RIGHT)
 
