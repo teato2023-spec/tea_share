@@ -1475,7 +1475,7 @@ class TypingPractice:
             else:
                 self._reveal_hidden()
         elif self.completed:
-            self._rate_and_next(2)       # 보통
+            self.next_sentence()
         return "break"
 
     def _reveal_hidden(self):
