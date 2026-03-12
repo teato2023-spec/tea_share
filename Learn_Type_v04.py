@@ -312,7 +312,7 @@ class TypingPractice:
         _cb = dict(font=self.fn_sm, relief=tk.FLAT, padx=10, pady=6, cursor="hand2")
         tk.Button(btn_col, text="+ 추가", command=self.add_sentence,
                   bg="#27ae60", fg="white", **_cb).pack(fill=tk.X, pady=2)
-        tk.Button(btn_col, text="✕ 삭제", command=self.delete_sentence,
+        tk.Button(btn_col, text="삭제", command=self.delete_sentence,
                   bg="#e74c3c", fg="white", **_cb).pack(fill=tk.X, pady=2)
         tk.Label(btn_col, bg="#f8f9fa").pack(fill=tk.Y, expand=True)  # spacer
         tk.Button(btn_col, text="✕ 닫기", command=win.withdraw,
