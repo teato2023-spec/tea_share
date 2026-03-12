@@ -1473,10 +1473,20 @@ class TypingPractice:
         if self.typing_mode.get() == "가리기" and self.practice_indices:
             if self.completed or self._hidden_revealed:
                 self._rate_and_next(2)   # 보통
-            else:
-                self._reveal_hidden()
         elif self.completed:
             self.next_sentence()
+        return "break"
+
+    def _handle_up(self, _e):
+        """가리기 모드에서 위 방향키로 문장 공개/숨김 토글."""
+        if self.typing_mode.get() != "가리기" or not self.practice_indices:
+            return "break"
+        if self.completed:
+            return "break"
+        if self._hidden_revealed:
+            self._hide_revealed()
+        else:
+            self._reveal_hidden()
         return "break"
 
     def _reveal_hidden(self):
@@ -1488,6 +1498,12 @@ class TypingPractice:
         self.target_display.config(state=tk.DISABLED)
         self._hidden_revealed = True
         self._update_desc_display()
+
+    def _hide_revealed(self):
+        """공개된 문장을 다시 가린다."""
+        typed = self.input_text.get("1.0", tk.END).rstrip("\n")
+        self._hidden_revealed = False
+        self._refresh_target(typed)
 
     def _on_key_release(self, event):
         _SKIP = {
