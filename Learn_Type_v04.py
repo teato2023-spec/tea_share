@@ -48,6 +48,8 @@ class TypingPractice:
         self.practice_indices: list[int] = []
         self.current_index: int = 0
 
+        self.srs_data: dict = {}
+
         self.start_time: float | None = None
         self.is_typing: bool = False
         self.completed: bool = False
