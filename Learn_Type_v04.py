@@ -1074,7 +1074,7 @@ class TypingPractice:
                 short = desc if len(desc) <= 30 else desc[:27] + "…"
                 content += f"   # {short}"
             self.sent_tree.insert("", tk.END, iid=f"r_{i}",
-                                  values=("☐", content), tags=("normal",))
+                                  values=("[ ]", content), tags=("normal",))
         if not active:
             self.sent_tree.insert("", tk.END, iid="empty_active",
                                   values=("", "    (없음)"), tags=("empty",))
