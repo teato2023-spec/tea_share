@@ -4,6 +4,7 @@ local map = vim.keymap.set
 -- 터미널
 map("n", "<leader>t", ":terminal<CR>", { desc = "터미널 열기" })
 map("t", "<Esc>", "<C-\\><C-n>:q<CR>", { desc = "터미널 닫기" })
+map("n", "<leader>gp", ":!cd /home/teato2023/git && git pull<CR>", { desc = "git pull" })
 
 -- 빠른 설정 파일 열기
 map("n", "<leader>oc", ":e ~/.config/nvim/init.lua<CR>", { desc = "init.lua 열기" })
