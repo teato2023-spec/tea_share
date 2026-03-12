@@ -108,18 +108,34 @@ class TypingPractice:
     def _change_font_size(self, size_str):
         size = int(size_str)
         self._font_size = size
-        for fn, kw in [
-            (self.fn_main,    {}),
-            (self.fn_strike,  {"overstrike": True}),
-            (self.fn_sm,      {}),
-            (self.fn_bold,    {"weight": "bold"}),
-            (self.fn_title,   {"weight": "bold"}),
-            (self.fn_desc,    {}),
-            (self.fn_mono,    {}),
-            (self.fn_mono_s,  {"overstrike": True}),
-            (self.fn_mono_sm, {}),
+        for fn in [
+            self.fn_main, self.fn_strike, self.fn_sm, self.fn_bold,
+            self.fn_title, self.fn_desc, self.fn_mono, self.fn_mono_s, self.fn_mono_sm,
         ]:
             fn.configure(size=size)
+
+    def _open_options_window(self):
+        win = tk.Toplevel(self.root)
+        win.title("옵션")
+        win.resizable(False, False)
+        win.configure(bg="#f0f2f5")
+        win.grab_set()
+
+        body = tk.Frame(win, bg="#f0f2f5", padx=20, pady=16)
+        body.pack(fill=tk.BOTH)
+
+        tk.Label(body, text="글자 크기", bg="#f0f2f5", font=self.fn_bold).grid(row=0, column=0, sticky="w", pady=(0, 6))
+        size_var = tk.StringVar(value=str(self._font_size))
+        om = tk.OptionMenu(body, size_var, "14", "16", "18", "20", "22", "24", "26", "28", "32",
+                           command=self._change_font_size)
+        om.config(font=self.fn_sm, bg="#ecf0f1", relief=tk.FLAT)
+        om.grid(row=0, column=1, padx=(10, 0), pady=(0, 6))
+
+        tk.Button(
+            body, text="닫기", command=win.destroy,
+            font=self.fn_sm, relief=tk.FLAT, padx=12, pady=3,
+            cursor="hand2", bg="#bdc3c7"
+        ).grid(row=1, column=0, columnspan=2, pady=(10, 0))
 
     # ── UI 구성 ───────────────────────────────────────────────────────────────
 
