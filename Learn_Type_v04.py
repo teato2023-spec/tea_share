@@ -241,6 +241,27 @@ class TypingPractice:
         self.input_text.bind("<KeyRelease>", self._on_key_release)
         self.input_text.bind("<Return>",     self._handle_enter)
 
+        # ── 하단 바: 암기 완료 + 모드 선택 ──────────────────────────────────
+        bot = tk.Frame(parent, bg="#ecf0f1", pady=5, padx=8)
+        bot.pack(fill=tk.X)
+        tk.Button(
+            bot, text="암기 완료", command=self.memorize_current,
+            font=self.fn_sm, relief=tk.FLAT, padx=8, pady=3,
+            cursor="hand2", bg="#27ae60", fg="white"
+        ).pack(side=tk.LEFT, padx=4)
+        tk.Label(bot, text="모드:", bg="#ecf0f1", font=self.fn_sm).pack(side=tk.RIGHT, padx=(8, 2))
+        _MODE_COLORS = {"기본": "#3498db", "가리기": "#8e44ad", "복습": "#e67e22"}
+        for mode in ["기본", "가리기", "복습"]:
+            tk.Radiobutton(
+                bot, text=mode, variable=self.typing_mode, value=mode,
+                command=self._on_mode_change,
+                bg="#ecf0f1", selectcolor=_MODE_COLORS[mode],
+                fg="#2c3e50", activeforeground="white",
+                font=self.fn_sm, cursor="hand2",
+                indicatoron=False, padx=7, pady=2,
+                relief=tk.GROOVE, activebackground=_MODE_COLORS[mode],
+            ).pack(side=tk.RIGHT, padx=1)
+
     # ── 문장 목록 팝업 창 ────────────────────────────────────────────────────
 
     def _create_sentence_window(self):
