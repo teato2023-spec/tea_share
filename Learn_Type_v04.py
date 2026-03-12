@@ -1522,7 +1522,7 @@ class TypingPractice:
             self._load_sentence()
         else:
             if self.typing_mode.get() == "복습":
-                messagebox.showinfo("복습 완료", "오늘의 복습을 완료했습니다! 🎉")
+                messagebox.showinfo("복습 완료", "오늘의 복습을 완료했습니다!")
             else:
                 messagebox.showinfo("완료", "모든 문장을 완료했습니다!")
 
