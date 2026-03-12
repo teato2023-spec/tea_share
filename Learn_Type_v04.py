@@ -1754,7 +1754,7 @@ class SentenceDialog:
         dlg = tk.Toplevel(parent)
         dlg.title(title)
         dlg.resizable(True, True)          # ← 마우스로 크기 조절 가능
-        dlg.minsize(420, 320)              # 최소 크기
+        dlg.minsize(630, 480)              # 최소 크기
         dlg.grab_set()
         dlg.configure(bg="#f0f2f5")
 
