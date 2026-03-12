@@ -150,6 +150,7 @@ class TypingPractice:
         tk.Button(nav, text="다시시작",  command=self.restart_all, **_nb).pack(side=tk.LEFT, padx=4)
         tk.Button(nav, text="문장 목록", command=self._open_sentence_window, **_nb).pack(side=tk.LEFT, padx=4)
         tk.Button(nav, text="파일 관리", command=self._open_tree_window,     **_nb).pack(side=tk.LEFT, padx=4)
+        tk.Button(nav, text="옵션",     command=self._open_options_window,  **_nb).pack(side=tk.LEFT, padx=4)
         # RIGHT 쪽은 먼저 pack 한 것이 더 오른쪽에 붙음
         self._stats_lbl = tk.Label(
             nav, text="타수: —  |  시간: —",
