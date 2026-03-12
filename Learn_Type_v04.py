@@ -463,7 +463,7 @@ class TypingPractice:
 
         tk.Label(
             win, text="우클릭으로 폴더·파일 관리  |  CSV를 드래그하여 폴더 이동",
-            bg="#ecf0f1", fg="#95a5a6", font=Font(family="Malgun Gothic", size=9),
+            bg="#ecf0f1", fg="#95a5a6", font=Font(family="Malgun Gothic", size=22),
             pady=4
         ).pack(fill=tk.X, padx=6)
 
