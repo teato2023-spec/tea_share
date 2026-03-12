@@ -602,7 +602,7 @@ class TypingPractice:
             elif name.lower().endswith(".csv"):
                 self.tree.insert(
                     parent, tk.END,
-                    text=f"📄 {name}", values=[full],
+                    text=f"{name}", values=[full],
                     tags=("csv",)
                 )
 
