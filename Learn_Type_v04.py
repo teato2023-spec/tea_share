@@ -259,7 +259,7 @@ class TypingPractice:
         self.input_text.bind("<KeyRelease>", self._on_key_release)
         self.input_text.bind("<Return>",     self._handle_enter)
 
-        # ── 하단 바: 암기 완료 + 모드 선택 + 글자 크기 ──────────────────────
+        # ── 하단 바: 암기 완료 + 모드 선택 ──────────────────────────────────
         bot = tk.Frame(parent, bg="#ecf0f1", pady=5, padx=8)
         bot.pack(fill=tk.X)
         tk.Button(
@@ -267,14 +267,6 @@ class TypingPractice:
             font=self.fn_sm, relief=tk.FLAT, padx=8, pady=3,
             cursor="hand2", bg="#27ae60", fg="white"
         ).pack(side=tk.LEFT, padx=4)
-        # 글자 크기 드롭다운
-        self._size_var = tk.StringVar(value=str(self._font_size))
-        tk.Label(bot, text="크기:", bg="#ecf0f1", font=self.fn_sm).pack(side=tk.LEFT, padx=(12, 2))
-        tk.OptionMenu(
-            bot, self._size_var,
-            "14", "16", "18", "20", "22", "24", "26", "28", "32",
-            command=self._change_font_size
-        ).pack(side=tk.LEFT)
         _MODE_COLORS = {"기본": "#3498db", "가리기": "#8e44ad", "복습": "#e67e22"}
         for mode in ["기본", "가리기", "복습"]:
             tk.Radiobutton(
