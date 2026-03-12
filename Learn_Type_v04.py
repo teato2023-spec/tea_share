@@ -1313,6 +1313,7 @@ class TypingPractice:
         self.current_csv      = None
         self.sentence_data    = []
         self.practice_indices = []
+        self.srs_data         = {}
         self._csv_lbl.config(text="파일 관리에서 CSV를 선택하세요", fg="#555")
         self._sent_win.title("문장 목록")
         self._refresh_sent_tree()
