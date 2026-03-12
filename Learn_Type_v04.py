@@ -110,7 +110,7 @@ class TypingPractice:
         top = tk.Frame(self.root, bg="#2c3e50", pady=9)
         top.pack(fill=tk.X)
         tk.Label(
-            top, text="⌨  Learn_Type ",
+            top, text="  Learn_Type  ",
             bg="#2c3e50", fg="white", font=self.fn_title
         ).pack(side=tk.LEFT, padx=14)
 
