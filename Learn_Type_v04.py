@@ -119,6 +119,7 @@ class TypingPractice:
         win.title("옵션")
         win.resizable(False, False)
         win.configure(bg="#f0f2f5")
+        win.transient(self.root)
         win.grab_set()
 
         body = tk.Frame(win, bg="#f0f2f5", padx=20, pady=16)
