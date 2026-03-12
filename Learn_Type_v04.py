@@ -595,7 +595,7 @@ class TypingPractice:
             if os.path.isdir(full):
                 node = self.tree.insert(
                     parent, tk.END,
-                    text=f"📁 {name}", values=[full],
+                    text=f"[폴더] {name}", values=[full],
                     tags=("folder",), open=False
                 )
                 self._insert_dir(full, node)
