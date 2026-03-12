@@ -503,7 +503,7 @@ class TypingPractice:
         """CSV 파일이 파일 관리 창 위에 드래그될 때 시각 피드백."""
         self._drop_hint.config(
             bg="#d5e8f5", fg="#2980b9",
-            text="📂  여기에 놓으면 CSV를 가져옵니다!"
+            text="여기에 놓으면 CSV를 가져옵니다!"
         )
 
     def _on_drag_leave(self, _event):
