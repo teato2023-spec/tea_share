@@ -1329,12 +1329,12 @@ class TypingPractice:
 
     def _show_banner(self):
         if not self._banner_visible:
-            self._banner.pack(fill=tk.X, padx=12, pady=(2, 4))
+            self._banner_frame.pack(fill=tk.X, padx=12, pady=(2, 4))
             self._banner_visible = True
 
     def _hide_banner(self):
         if self._banner_visible:
-            self._banner.pack_forget()
+            self._banner_frame.pack_forget()
             self._banner_visible = False
 
     def _show_desc(self, text: str):
