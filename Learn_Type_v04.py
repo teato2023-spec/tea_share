@@ -193,7 +193,7 @@ class TypingPractice:
         self._desc_lbl = tk.Label(
             self._desc_frame, text="",
             bg="#eaf4fb", fg="#1a5276",
-            font=self.fn_desc, wraplength=750,
+            font=self.fn_desc, wraplength=1200,
             anchor="w", justify="left"
         )
         self._desc_lbl.pack(fill=tk.X)
@@ -206,7 +206,7 @@ class TypingPractice:
         self._explanation_lbl = tk.Label(
             self._explanation_frame, text="",
             bg="#f0fff0", fg="#1a5226",
-            font=self.fn_desc, wraplength=750,
+            font=self.fn_desc, wraplength=1200,
             anchor="w", justify="left"
         )
         self._explanation_lbl.pack(fill=tk.X)
