@@ -1509,7 +1509,7 @@ class TypingPractice:
         self._build_practice_indices()
         if not self.practice_indices:
             self._clear_practice_area()
-            messagebox.showinfo("완료", "모든 문장을 암기 완료했습니다! 🎉")
+            messagebox.showinfo("완료", "모든 문장을 암기 완료했습니다!")
             return
         self.current_index = min(self.current_index, len(self.practice_indices) - 1)
         self._load_sentence()
