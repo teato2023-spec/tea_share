@@ -848,7 +848,7 @@ class TypingPractice:
         var = tk.StringVar(value=drives[0][1])   # 첫 번째 USB 드라이브를 기본 선택
 
         # USB 드라이브 목록
-        tk.Label(body, text="💾  USB / 외부 드라이브",
+        tk.Label(body, text="USB / 외부 드라이브",
                  bg="#f0f2f5", fg="#2980b9", font=fn_bold,
                  anchor="w").pack(fill=tk.X, pady=(0, 4))
 
