@@ -266,7 +266,7 @@ class TypingPractice:
         """문장 목록 팝업을 미리 생성해 숨겨 둔다 (위젯 참조 유지용)."""
         win = tk.Toplevel(self.root)
         win.title("문장 목록")
-        win.geometry("680x560")
+        win.geometry("1020x840")
         win.resizable(True, True)
         win.configure(bg="#f8f9fa")
         win.protocol("WM_DELETE_WINDOW", win.withdraw)
