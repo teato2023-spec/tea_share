@@ -200,7 +200,7 @@ class TypingPractice:
 
         # 설명 프레임 (별도, 기본 숨김)
         self._explanation_frame = tk.LabelFrame(
-            self._middle, text=" 💬 설명 ", font=self.fn_bold,
+            self._middle, text=" 설명 ", font=self.fn_bold,
             bg="#f0fff0", padx=10, pady=6, fg="#1a7a3a"
         )
         self._explanation_lbl = tk.Label(
