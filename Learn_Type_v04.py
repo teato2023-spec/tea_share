@@ -315,7 +315,7 @@ class TypingPractice:
         tk.Button(btn_col, text="삭제", command=self.delete_sentence,
                   bg="#e74c3c", fg="white", **_cb).pack(fill=tk.X, pady=2)
         tk.Label(btn_col, bg="#f8f9fa").pack(fill=tk.Y, expand=True)  # spacer
-        tk.Button(btn_col, text="✕ 닫기", command=win.withdraw,
+        tk.Button(btn_col, text="닫기", command=win.withdraw,
                   bg="#7f8c8d", fg="white", **_cb).pack(fill=tk.X, pady=2)
 
         # 트리뷰 (좌측, 나머지 공간 모두 사용)
