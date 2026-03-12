@@ -210,14 +210,38 @@ class TypingPractice:
         )
         self._explanation_lbl.pack(fill=tk.X)
 
-        # 완료 배너 (내부, 기본 숨김)
-        self._banner = tk.Label(
-            self._middle,
-            text="✓ 완료!   Enter 키로 다음 문장으로 이동",
+        # 완료 배너 (SRS 평가 버튼 포함, 기본 숨김)
+        self._banner_frame = tk.Frame(self._middle, bg="#27ae60")
+
+        tk.Label(
+            self._banner_frame, text="✓ 완료!",
             bg="#27ae60", fg="white",
             font=Font(family="Malgun Gothic", size=11, weight="bold"),
-            pady=5
-        )
+            padx=12, pady=5
+        ).pack(side=tk.LEFT)
+
+        tk.Label(
+            self._banner_frame, text="Enter = 보통",
+            bg="#27ae60", fg="#d5f5e3",
+            font=Font(family="Malgun Gothic", size=9),
+            padx=10
+        ).pack(side=tk.RIGHT)
+
+        _srs_f = tk.Frame(self._banner_frame, bg="#27ae60")
+        _srs_f.pack(side=tk.LEFT, padx=4)
+        for _label, _color, _rating in [
+            ("다시",   "#e74c3c", 0),
+            ("어려움", "#e67e22", 1),
+            ("보통",   "#3498db", 2),
+            ("쉬움",   "#2ecc71", 3),
+        ]:
+            tk.Button(
+                _srs_f, text=_label,
+                bg=_color, fg="white",
+                font=Font(family="Malgun Gothic", size=10, weight="bold"),
+                relief=tk.FLAT, padx=10, pady=3, cursor="hand2",
+                command=lambda r=_rating: self._rate_and_next(r)
+            ).pack(side=tk.LEFT, padx=2, pady=3)
 
         # 입력 영역 (target_display 와 같은 방식으로 fill=X, 자동 높이)
         self._input_frame = tk.LabelFrame(
