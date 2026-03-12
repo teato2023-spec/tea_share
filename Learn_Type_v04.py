@@ -146,20 +146,6 @@ class TypingPractice:
             activebackground="#ecf0f1"
         ).pack(side=tk.RIGHT, padx=4)
 
-        # ── 타이핑 모드 선택 ─────────────────────────────────────────────
-        tk.Label(nav, text="모드:", bg="#ecf0f1", font=self.fn_sm).pack(side=tk.RIGHT, padx=(8, 2))
-        _MODE_COLORS = {"기본": "#3498db", "가리기": "#8e44ad", "복습": "#e67e22"}
-        for mode in ["기본", "가리기", "복습"]:
-            tk.Radiobutton(
-                nav, text=mode, variable=self.typing_mode, value=mode,
-                command=self._on_mode_change,
-                bg="#ecf0f1", selectcolor=_MODE_COLORS[mode],
-                fg="#2c3e50", activeforeground="white",
-                font=self.fn_sm, cursor="hand2",
-                indicatoron=False, padx=7, pady=2,
-                relief=tk.GROOVE, activebackground=_MODE_COLORS[mode],
-            ).pack(side=tk.RIGHT, padx=1)
-
         # 연습 문장
         self._target_frame = tk.LabelFrame(
             parent, text=" 연습 문장 ", font=self.fn_bold,
