@@ -745,9 +745,7 @@ class TypingPractice:
             messagebox.showerror("오류", str(e))
 
     def create_csv_file(self):
-        name = simpledialog.askstring(
-            "CSV 만들기", "파일 이름 (.csv 자동 추가):", parent=self.root
-        )
+        name = self._ask_string("CSV 만들기", "파일 이름 (.csv 자동 추가):")
         if not name:
             return
         if not name.lower().endswith(".csv"):
