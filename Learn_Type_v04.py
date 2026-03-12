@@ -1626,6 +1626,52 @@ class TypingPractice:
     # ── 검색 ─────────────────────────────────────────────────────────────────
 
     # ══════════════════════════════════════════════════════════════════════════
+    # 커스텀 입력 다이얼로그 (simpledialog 대체 - 폰트 크기 통일)
+    # ══════════════════════════════════════════════════════════════════════════
+
+    def _ask_string(self, title: str, prompt: str, initialvalue: str = "") -> str | None:
+        """fn_sm 폰트를 적용한 커스텀 문자열 입력 다이얼로그."""
+        result = [None]
+
+        dlg = tk.Toplevel(self.root)
+        dlg.title(title)
+        dlg.resizable(False, False)
+        dlg.grab_set()
+        dlg.configure(bg="#f0f2f5")
+
+        tk.Label(dlg, text=prompt, bg="#f0f2f5", font=self.fn_sm,
+                 anchor="w").pack(fill=tk.X, padx=20, pady=(18, 6))
+
+        entry = tk.Entry(dlg, font=self.fn_sm, relief=tk.SOLID, bd=1)
+        entry.pack(fill=tk.X, padx=20, pady=(0, 14))
+        entry.insert(0, initialvalue)
+        entry.select_range(0, tk.END)
+        entry.focus_set()
+
+        bf = tk.Frame(dlg, bg="#f0f2f5")
+        bf.pack(pady=(0, 16))
+        _b = dict(font=self.fn_sm, relief=tk.FLAT, padx=18, pady=6, cursor="hand2")
+
+        def ok(_e=None):
+            result[0] = entry.get()
+            dlg.destroy()
+
+        def cancel(_e=None):
+            dlg.destroy()
+
+        tk.Button(bf, text="확인", command=ok,
+                  bg="#3498db", fg="white", **_b).pack(side=tk.LEFT, padx=6)
+        tk.Button(bf, text="취소", command=cancel,
+                  bg="#95a5a6", fg="white", **_b).pack(side=tk.LEFT)
+
+        dlg.bind("<Return>", ok)
+        dlg.bind("<Escape>", cancel)
+        dlg.update_idletasks()
+        dlg.geometry("")
+        self.root.wait_window(dlg)
+        return result[0]
+
+    # ══════════════════════════════════════════════════════════════════════════
     # SRS (Anki SM-2) 메서드
     # ══════════════════════════════════════════════════════════════════════════
 
