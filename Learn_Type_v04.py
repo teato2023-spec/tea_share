@@ -7,6 +7,7 @@
 - SRS(Anki): 완료 후 난이도 평가 → .srs.json 에 복습 일정 자동 관리
 """
 
+from __future__ import annotations
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, simpledialog
 from tkinter.font import Font
