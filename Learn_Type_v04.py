@@ -1687,6 +1687,7 @@ class TypingPractice:
         dlg = tk.Toplevel(self.root)
         dlg.title(title)
         dlg.resizable(False, False)
+        dlg.transient(self.root)
         dlg.grab_set()
         dlg.configure(bg="#f0f2f5")
 
