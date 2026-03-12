@@ -36,7 +36,7 @@ class TypingPractice:
     def __init__(self, root: tk.Tk):
         self.root = root
         self.root.title("TH")
-        self.root.geometry("1650x930")
+        self.root.geometry("1750x930")
         self.root.configure(bg="#f0f2f5")
 
         os.makedirs(BASE_DIR, exist_ok=True)
