@@ -1081,7 +1081,7 @@ class TypingPractice:
 
         # ── 암기 완료 섹션 ───────────────────────────────────────────────────
         self.sent_tree.insert("", tk.END, iid="hdr_done",
-                              values=("", "  ✅  암기 완료"), tags=("hdr",))
+                              values=("", "  암기 완료"), tags=("hdr",))
         done = [i for i in range(len(self.sentence_data))
                 if i in self.memorized_indices]
         for i in done:
