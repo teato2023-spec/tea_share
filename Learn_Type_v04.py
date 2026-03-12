@@ -241,6 +241,7 @@ class TypingPractice:
         self.input_text.pack(fill=tk.X)
         self.input_text.bind("<KeyRelease>", self._on_key_release)
         self.input_text.bind("<Return>",     self._handle_enter)
+        self.input_text.bind("<Up>",         self._handle_up)
 
         # ── 완료 배너 (SRS 평가 버튼, 기본 숨김) ────────────────────────────
         self._banner_frame = tk.Frame(parent, bg="#27ae60")
