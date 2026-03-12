@@ -1,9 +1,10 @@
 """
-타이핑 연습 프로그램 v3
+타이핑 연습 프로그램 v4
 - 좌측   : 폴더/CSV 파일 트리 (생성·삭제·가져오기·이름변경)
 - 우측 상단: 문장 목록 + CRUD (추가·수정·삭제, 설명 포함)
-- 우측 하단: 타이핑 연습 (오타 취소선·설명 표시·랜덤 모드)
+- 우측 하단: 타이핑 연습 (오타 취소선·설명 표시·랜덤·복습 모드)
 - CSV 형식: text, description 두 열
+- SRS(Anki): 완료 후 난이도 평가 → .srs.json 에 복습 일정 자동 관리
 """
 
 import tkinter as tk
@@ -14,6 +15,8 @@ import time
 import random
 import os
 import shutil
+import json
+from datetime import date, timedelta
 
 try:
     from tkinterdnd2 import TkinterDnD, DND_FILES
