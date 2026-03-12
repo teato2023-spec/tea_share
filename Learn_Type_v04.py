@@ -1424,13 +1424,11 @@ class TypingPractice:
     def _handle_enter(self, _e):
         if self.typing_mode.get() == "가리기" and self.practice_indices:
             if self.completed or self._hidden_revealed:
-                # 2차 엔터: 다음 문장
-                self.next_sentence()
+                self._rate_and_next(2)   # 보통
             else:
-                # 1차 엔터: 정답 공개
                 self._reveal_hidden()
         elif self.completed:
-            self.next_sentence()
+            self._rate_and_next(2)       # 보통
         return "break"
 
     def _reveal_hidden(self):
