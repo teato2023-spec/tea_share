@@ -357,7 +357,7 @@ class TypingPractice:
 
         tk.Label(
             win, text="☑ 클릭으로 암기 토글  |  행을 드래그하여 같은 섹션 내 순서 변경  |  행 클릭 시 하단 수정 패널 표시",
-            bg="#f8f9fa", fg="#95a5a6", font=Font(family="Malgun Gothic", size=9), pady=2
+            bg="#f8f9fa", fg="#95a5a6", font=Font(family="Malgun Gothic", size=22), pady=2
         ).pack(fill=tk.X, padx=8)
 
         # ── 인라인 수정 패널 (기본 숨김, 클릭 시 표시) ──────────────────────
