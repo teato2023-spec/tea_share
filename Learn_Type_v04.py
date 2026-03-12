@@ -94,15 +94,15 @@ class TypingPractice:
     # ── 폰트 ─────────────────────────────────────────────────────────────────
 
     def _setup_fonts(self):
-        self.fn_main   = Font(family="Malgun Gothic", size=15)
-        self.fn_strike = Font(family="Malgun Gothic", size=15, overstrike=True)
-        self.fn_sm     = Font(family="Malgun Gothic", size=10)
-        self.fn_bold   = Font(family="Malgun Gothic", size=10, weight="bold")
-        self.fn_title  = Font(family="Malgun Gothic", size=13, weight="bold")
-        self.fn_desc   = Font(family="Malgun Gothic", size=11)
-        self.fn_mono    = Font(family="Monospace", size=15)
-        self.fn_mono_s  = Font(family="Monospace", size=15, overstrike=True)
-        self.fn_mono_sm = Font(family="Monospace", size=10)
+        self.fn_main   = Font(family="Malgun Gothic", size=20)
+        self.fn_strike = Font(family="Malgun Gothic", size=20, overstrike=True)
+        self.fn_sm     = Font(family="Malgun Gothic", size=15)
+        self.fn_bold   = Font(family="Malgun Gothic", size=15, weight="bold")
+        self.fn_title  = Font(family="Malgun Gothic", size=18, weight="bold")
+        self.fn_desc   = Font(family="Malgun Gothic", size=16)
+        self.fn_mono    = Font(family="Monospace", size=20)
+        self.fn_mono_s  = Font(family="Monospace", size=20, overstrike=True)
+        self.fn_mono_sm = Font(family="Monospace", size=15)
 
     # ── UI 구성 ───────────────────────────────────────────────────────────────
 
