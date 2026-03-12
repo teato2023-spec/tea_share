@@ -735,7 +735,7 @@ class TypingPractice:
     # ══════════════════════════════════════════════════════════════════════════
 
     def create_folder(self):
-        name = simpledialog.askstring("폴더 추가", "폴더 이름:", parent=self.root)
+        name = self._ask_string("폴더 추가", "폴더 이름:")
         if not name:
             return
         try:
