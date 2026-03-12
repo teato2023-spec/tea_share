@@ -1758,9 +1758,9 @@ class SentenceDialog:
         dlg.grab_set()
         dlg.configure(bg="#f0f2f5")
 
-        fn    = Font(family="Malgun Gothic", size=11)
-        fn_sm = Font(family="Malgun Gothic", size=9)
-        fn_mo = Font(family="Monospace",     size=11)
+        fn    = Font(family="Malgun Gothic", size=22)
+        fn_sm = Font(family="Malgun Gothic", size=22)
+        fn_mo = Font(family="Monospace",     size=22)
 
         # ── 글자 수에 따라 입력란 높이 자동 조절 ──────────────────────────
         def auto_h(widget: tk.Text, min_h: int = 2, max_h: int = 12):
