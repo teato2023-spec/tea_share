@@ -93,16 +93,33 @@ class TypingPractice:
 
     # ── 폰트 ─────────────────────────────────────────────────────────────────
 
-    def _setup_fonts(self):
-        self.fn_main   = Font(family="Malgun Gothic", size=22)
-        self.fn_strike = Font(family="Malgun Gothic", size=22, overstrike=True)
-        self.fn_sm     = Font(family="Malgun Gothic", size=22)
-        self.fn_bold   = Font(family="Malgun Gothic", size=22, weight="bold")
-        self.fn_title  = Font(family="Malgun Gothic", size=22, weight="bold")
-        self.fn_desc   = Font(family="Malgun Gothic", size=22)
-        self.fn_mono    = Font(family="Monospace", size=22)
-        self.fn_mono_s  = Font(family="Monospace", size=22, overstrike=True)
-        self.fn_mono_sm = Font(family="Monospace", size=22)
+    def _setup_fonts(self, size=22):
+        self._font_size = size
+        self.fn_main   = Font(family="Malgun Gothic", size=size)
+        self.fn_strike = Font(family="Malgun Gothic", size=size, overstrike=True)
+        self.fn_sm     = Font(family="Malgun Gothic", size=size)
+        self.fn_bold   = Font(family="Malgun Gothic", size=size, weight="bold")
+        self.fn_title  = Font(family="Malgun Gothic", size=size, weight="bold")
+        self.fn_desc   = Font(family="Malgun Gothic", size=size)
+        self.fn_mono    = Font(family="Monospace", size=size)
+        self.fn_mono_s  = Font(family="Monospace", size=size, overstrike=True)
+        self.fn_mono_sm = Font(family="Monospace", size=size)
+
+    def _change_font_size(self, size_str):
+        size = int(size_str)
+        self._font_size = size
+        for fn, kw in [
+            (self.fn_main,    {}),
+            (self.fn_strike,  {"overstrike": True}),
+            (self.fn_sm,      {}),
+            (self.fn_bold,    {"weight": "bold"}),
+            (self.fn_title,   {"weight": "bold"}),
+            (self.fn_desc,    {}),
+            (self.fn_mono,    {}),
+            (self.fn_mono_s,  {"overstrike": True}),
+            (self.fn_mono_sm, {}),
+        ]:
+            fn.configure(size=size)
 
     # ── UI 구성 ───────────────────────────────────────────────────────────────
 
