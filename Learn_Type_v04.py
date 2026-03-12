@@ -239,7 +239,7 @@ class TypingPractice:
             tk.Button(
                 _srs_f, text=_label,
                 bg=_color, fg="white",
-                font=Font(family="Malgun Gothic", size=10, weight="bold"),
+                font=Font(family="Malgun Gothic", size=22, weight="bold"),
                 relief=tk.FLAT, padx=10, pady=3, cursor="hand2",
                 command=lambda r=_rating: self._rate_and_next(r)
             ).pack(side=tk.LEFT, padx=2, pady=3)
