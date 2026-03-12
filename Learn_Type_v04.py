@@ -986,6 +986,7 @@ class TypingPractice:
             self.current_csv = path
             self.sentence_data = data
             self.memorized_indices = set()
+            self._load_srs()
             fname = os.path.basename(path)
             self._csv_lbl.config(text=fname, fg="#2c3e50")
             self._sent_win.title(f"문장 목록 — {fname}")
