@@ -130,9 +130,9 @@ class TypingPractice:
         self._counter_lbl = tk.Label(nav, text="0 / 0", bg="#ecf0f1", font=self.fn_sm)
         self._counter_lbl.pack(side=tk.LEFT, padx=8)
         tk.Button(nav, text="다음 >",      command=self.next_sentence, **_nb).pack(side=tk.LEFT)
-        tk.Button(nav, text="↺ 다시시작",  command=self.restart_all, **_nb).pack(side=tk.LEFT, padx=4)
-        tk.Button(nav, text="📋 문장 목록", command=self._open_sentence_window, **_nb).pack(side=tk.LEFT, padx=4)
-        tk.Button(nav, text="📁 파일 관리", command=self._open_tree_window,     **_nb).pack(side=tk.LEFT, padx=4)
+        tk.Button(nav, text="다시시작",  command=self.restart_all, **_nb).pack(side=tk.LEFT, padx=4)
+        tk.Button(nav, text="문장 목록", command=self._open_sentence_window, **_nb).pack(side=tk.LEFT, padx=4)
+        tk.Button(nav, text="파일 관리", command=self._open_tree_window,     **_nb).pack(side=tk.LEFT, padx=4)
         tk.Button(
             nav, text="✅ 암기 완료", command=self.memorize_current,
             font=self.fn_sm, relief=tk.FLAT, padx=8, pady=3,
