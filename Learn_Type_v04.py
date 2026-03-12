@@ -1625,6 +1625,96 @@ class TypingPractice:
 
     # ── 검색 ─────────────────────────────────────────────────────────────────
 
+    # ══════════════════════════════════════════════════════════════════════════
+    # SRS (Anki SM-2) 메서드
+    # ══════════════════════════════════════════════════════════════════════════
+
+    def _srs_path(self) -> str | None:
+        """현재 CSV 에 대응하는 .srs.json 경로."""
+        if not self.current_csv:
+            return None
+        return os.path.splitext(self.current_csv)[0] + ".srs.json"
+
+    def _load_srs(self):
+        """SRS JSON 파일 로드. 없으면 빈 dict."""
+        path = self._srs_path()
+        if path and os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    self.srs_data = json.load(f)
+            except Exception:
+                self.srs_data = {}
+        else:
+            self.srs_data = {}
+
+    def _save_srs(self):
+        """SRS 데이터를 JSON 파일에 저장."""
+        path = self._srs_path()
+        if not path:
+            return
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(self.srs_data, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+
+    def _get_srs(self, text: str) -> dict:
+        """문장의 SRS 항목 반환. 없으면 기본값 생성."""
+        if text not in self.srs_data:
+            self.srs_data[text] = {
+                "interval":    1,
+                "ease_factor": 2.5,
+                "next_review": date.today().isoformat(),
+                "reps":        0,
+            }
+        return self.srs_data[text]
+
+    def _apply_sm2(self, entry: dict, rating: int) -> dict:
+        """SM-2 알고리즘으로 다음 복습 일정 계산.
+        rating: 0=다시, 1=어려움, 2=보통, 3=쉬움
+        """
+        ef   = entry["ease_factor"]
+        ivl  = entry["interval"]
+        reps = entry["reps"]
+
+        if rating == 0:        # 다시
+            ivl  = 1
+            ef   = max(1.3, ef - 0.20)
+            reps = 0
+        elif rating == 1:      # 어려움
+            ivl  = max(1, round(ivl * 1.2))
+            ef   = max(1.3, ef - 0.15)
+            reps += 1
+        elif rating == 2:      # 보통
+            if reps == 0:   ivl = 1
+            elif reps == 1: ivl = 3
+            else:           ivl = max(1, round(ivl * ef))
+            reps += 1
+        else:                  # 쉬움
+            if reps == 0:   ivl = 4
+            elif reps == 1: ivl = 5
+            else:           ivl = max(1, round(ivl * ef * 1.3))
+            ef   = min(3.5, ef + 0.15)
+            reps += 1
+
+        return {
+            "interval":    ivl,
+            "ease_factor": round(ef, 2),
+            "next_review": (date.today() + timedelta(days=ivl)).isoformat(),
+            "reps":        reps,
+        }
+
+    def _rate_and_next(self, rating: int):
+        """SRS 평가 후 다음 문장으로 이동."""
+        if not self.practice_indices:
+            return
+        text = self._cur_text()
+        self.srs_data[text] = self._apply_sm2(self._get_srs(text), rating)
+        self._save_srs()
+        self.next_sentence()
+
+    # ══════════════════════════════════════════════════════════════════════════
+
     def _apply_search(self):
         """검색어와 일치하는 행을 노란색으로 하이라이트."""
         if not hasattr(self, "_search_var"):
