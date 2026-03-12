@@ -422,7 +422,7 @@ class TypingPractice:
         """파일/폴더 트리 팝업을 미리 생성해 숨겨 둔다."""
         win = tk.Toplevel(self.root)
         win.title("파일 관리")
-        win.geometry("300x480")
+        win.geometry("450x720")
         win.resizable(True, True)
         win.configure(bg="#ecf0f1")
         win.protocol("WM_DELETE_WINDOW", win.withdraw)
