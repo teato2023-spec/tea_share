@@ -488,7 +488,7 @@ class TypingPractice:
             win.dnd_bind('<<DragLeave>>', self._on_drag_leave)
 
         tk.Button(
-            win, text="✕ 닫기", command=win.withdraw,
+            win, text="닫기", command=win.withdraw,
             font=self.fn_sm, relief=tk.FLAT, padx=8, pady=3,
             cursor="hand2", bg="#bdc3c7"
         ).pack(pady=(0, 6))
