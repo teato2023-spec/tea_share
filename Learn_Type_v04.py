@@ -303,6 +303,7 @@ class TypingPractice:
         win.geometry("1020x840")
         win.resizable(True, True)
         win.configure(bg="#f8f9fa")
+        win.transient(self.root)
         win.protocol("WM_DELETE_WINDOW", win.withdraw)
         win.withdraw()
         self._sent_win = win
