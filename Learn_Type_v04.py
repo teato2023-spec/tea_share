@@ -1375,14 +1375,20 @@ class TypingPractice:
 
     def _on_mode_change(self):
         """타이핑 모드 변경 시 연습 화면 갱신."""
-        if self.practice_indices:
-            typed = self.input_text.get("1.0", tk.END).rstrip("\n")
-            self._refresh_target(typed)
-            if self.typing_mode.get() == "가리기":
-                self._update_desc_display()
-            elif not self.completed:
-                self._hide_desc()
-                self._hide_explanation()
+        self._build_practice_indices()
+        if not self.practice_indices:
+            self._clear_practice_area()
+            if self.typing_mode.get() == "복습" and self.sentence_data:
+                messagebox.showinfo("복습 완료", "오늘 복습할 문장이 없습니다. 🎉\n내일 다시 확인하세요!")
+            return
+        self._load_sentence()
+        typed = self.input_text.get("1.0", tk.END).rstrip("\n")
+        self._refresh_target(typed)
+        if self.typing_mode.get() in ("가리기", "복습"):
+            self._update_desc_display()
+        elif not self.completed:
+            self._hide_desc()
+            self._hide_explanation()
 
     def _refresh_target(self, typed: str):
         if not self.practice_indices:
