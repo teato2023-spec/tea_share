@@ -126,7 +126,7 @@ class TypingPractice:
         nav.pack(fill=tk.X)
         _nb = dict(font=self.fn_sm, relief=tk.FLAT, padx=8, pady=3,
                    cursor="hand2", bg="#ecf0f1")
-        tk.Button(nav, text="◀ 이전",      command=self.prev_sentence, **_nb).pack(side=tk.LEFT)
+        tk.Button(nav, text="< 이전",      command=self.prev_sentence, **_nb).pack(side=tk.LEFT)
         self._counter_lbl = tk.Label(nav, text="0 / 0", bg="#ecf0f1", font=self.fn_sm)
         self._counter_lbl.pack(side=tk.LEFT, padx=8)
         tk.Button(nav, text="다음 ▶",      command=self.next_sentence, **_nb).pack(side=tk.LEFT)
