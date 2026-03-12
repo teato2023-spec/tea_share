@@ -187,7 +187,7 @@ class TypingPractice:
 
         # 해석 프레임 (내부, 기본 숨김)
         self._desc_frame = tk.LabelFrame(
-            self._middle, text=" 💡 해석 ", font=self.fn_bold,
+            self._middle, text=" 해석 ", font=self.fn_bold,
             bg="#eaf4fb", padx=10, pady=6, fg="#1a6898"
         )
         self._desc_lbl = tk.Label(
