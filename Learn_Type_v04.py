@@ -715,20 +715,19 @@ class TypingPractice:
         if item:
             self.tree.selection_set(item)
         menu = tk.Menu(self.root, tearoff=0, font=self.fn_sm)
-        menu.add_command(label="📁 폴더 추가",       command=self.create_folder)
-        menu.add_command(label="📄 CSV 새로 만들기", command=self.create_csv_file)
-        menu.add_command(label="📥 CSV 가져오기",    command=self.import_csv)
+        menu.add_command(label="폴더 추가",         command=self.create_folder)
+        menu.add_command(label="CSV 새로 만들기",   command=self.create_csv_file)
+        menu.add_command(label="CSV 가져오기",      command=self.import_csv)
         menu.add_separator()
-        # 현재 로드된 CSV가 있을 때만 저장 활성화
         has_csv = bool(self.current_csv)
         save_state = tk.NORMAL if has_csv else tk.DISABLED
-        menu.add_command(label="💾 저장",              command=self._save_selected_csv,
+        menu.add_command(label="저장",              command=self._save_selected_csv,
                          state=save_state)
-        menu.add_command(label="💾 다른 이름으로 저장", command=self.save_csv_as,
+        menu.add_command(label="다른 이름으로 저장", command=self.save_csv_as,
                          state=save_state)
         menu.add_separator()
-        menu.add_command(label="✎ 이름 변경",        command=self.rename_tree_item)
-        menu.add_command(label="🗑 삭제",            command=self.delete_tree_item)
+        menu.add_command(label="이름 변경",          command=self.rename_tree_item)
+        menu.add_command(label="삭제",              command=self.delete_tree_item)
         menu.tk_popup(event.x_root, event.y_root)
 
     # ══════════════════════════════════════════════════════════════════════════
