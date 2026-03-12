@@ -323,7 +323,7 @@ class TypingPractice:
         tv_wrap.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         style = ttk.Style()
-        style.configure("Sent.Treeview", font=self.fn_sm, rowheight=24)
+        style.configure("Sent.Treeview", font=self.fn_sm, rowheight=38)
         style.configure("Sent.Treeview.Heading", font=self.fn_bold)
 
         self.sent_tree = ttk.Treeview(
