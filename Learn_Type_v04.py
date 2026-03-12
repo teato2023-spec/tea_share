@@ -874,7 +874,7 @@ class TypingPractice:
         # 홈 디렉토리 선택
         tk.Radiobutton(
             body,
-            text=f"🏠  홈 디렉토리  ({os.path.expanduser('~')})",
+            text=f"홈 디렉토리  ({os.path.expanduser('~')})",
             variable=var, value="__home__",
             bg="#f0f2f5", fg="#2c3e50", font=fn,
             activebackground="#f0f2f5", anchor="w"
