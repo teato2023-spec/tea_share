@@ -471,7 +471,7 @@ class TypingPractice:
         _dnd_text = (
             "📂  CSV 파일을 여기에 드래그하여 가져오기"
             if HAS_DND else
-            "💡  우클릭 → CSV 가져오기 로 파일 추가"
+            "우클릭 → CSV 가져오기 로 파일 추가"
         )
         self._drop_hint = tk.Label(
             win, text=_dnd_text,
