@@ -145,7 +145,7 @@ class TypingPractice:
         )
         self._stats_lbl.pack(side=tk.RIGHT, padx=8)
         tk.Checkbutton(
-            nav, text="🔀 랜덤",
+            nav, text="랜덤",
             variable=self.random_var, command=self._toggle_random,
             bg="#ecf0f1", font=self.fn_sm, cursor="hand2",
             activebackground="#ecf0f1"
