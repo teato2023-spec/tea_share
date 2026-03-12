@@ -1391,7 +1391,7 @@ class TypingPractice:
         if not self.practice_indices:
             self._clear_practice_area()
             if self.typing_mode.get() == "복습" and self.sentence_data:
-                messagebox.showinfo("복습 완료", "오늘 복습할 문장이 없습니다. 🎉\n내일 다시 확인하세요!")
+                messagebox.showinfo("복습 완료", "오늘 복습할 문장이 없습니다.\n내일 다시 확인하세요!")
             return
         self._load_sentence()
         typed = self.input_text.get("1.0", tk.END).rstrip("\n")
