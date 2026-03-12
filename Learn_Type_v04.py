@@ -1064,7 +1064,7 @@ class TypingPractice:
 
         # ── 미암기 섹션 ──────────────────────────────────────────────────────
         self.sent_tree.insert("", tk.END, iid="hdr_active",
-                              values=("", "  📝  미암기 문장"), tags=("hdr",))
+                              values=("", "  미암기 문장"), tags=("hdr",))
         active = [i for i in range(len(self.sentence_data))
                   if i not in self.memorized_indices]
         for i in active:
