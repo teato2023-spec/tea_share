@@ -258,7 +258,7 @@ class TypingPractice:
         self.input_text.bind("<KeyRelease>", self._on_key_release)
         self.input_text.bind("<Return>",     self._handle_enter)
 
-        # ── 하단 바: 암기 완료 + 모드 선택 ──────────────────────────────────
+        # ── 하단 바: 암기 완료 + 모드 선택 + 글자 크기 ──────────────────────
         bot = tk.Frame(parent, bg="#ecf0f1", pady=5, padx=8)
         bot.pack(fill=tk.X)
         tk.Button(
