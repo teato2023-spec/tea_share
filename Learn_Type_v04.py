@@ -401,7 +401,7 @@ class TypingPractice:
         ibf = tk.Frame(self._inline_frame, bg="#fffde7")
         ibf.pack(anchor="e", pady=(0, 2))
         _ib = dict(font=self.fn_sm, relief=tk.FLAT, padx=8, pady=3, cursor="hand2")
-        tk.Button(ibf, text="💾 저장", command=self._save_inline_edit,
+        tk.Button(ibf, text="저장", command=self._save_inline_edit,
                   bg="#27ae60", fg="white", **_ib).pack(side=tk.LEFT, padx=3)
         tk.Button(ibf, text="✕ 취소", command=self._hide_inline_edit,
                   bg="#95a5a6", fg="white", **_ib).pack(side=tk.LEFT)
