@@ -510,7 +510,7 @@ class TypingPractice:
         """드래그가 파일 관리 창을 벗어날 때 원래 상태로 복원."""
         self._drop_hint.config(
             bg="#ecf0f1", fg="#95a5a6",
-            text="📂  CSV 파일을 여기에 드래그하여 가져오기"
+            text="CSV 파일을 여기에 드래그하여 가져오기"
         )
 
     def _on_tree_drop(self, event):
