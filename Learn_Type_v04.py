@@ -1510,10 +1510,10 @@ class TypingPractice:
     def _check_completion(self, typed: str):
         if typed == self._cur_text() and not self.completed:
             self.completed = True
-            self._show_banner()
-            self._update_desc_display()
             if self.typing_mode.get() == "가리기":
+                self._show_banner()
                 self._refresh_target(typed)
+            self._update_desc_display()
 
     def _update_stats(self, typed: str):
         if not typed or not self.start_time:
