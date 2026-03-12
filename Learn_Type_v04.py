@@ -362,7 +362,7 @@ class TypingPractice:
 
         # ── 인라인 수정 패널 (기본 숨김, 클릭 시 표시) ──────────────────────
         self._inline_frame = tk.LabelFrame(
-            win, text=" ✎ 선택 문장 수정 ", font=self.fn_bold,
+            win, text=" 선택 문장 수정 ", font=self.fn_bold,
             bg="#fffde7", padx=8, pady=6, fg="#7d6608"
         )
         # (pack 은 _show_inline_edit 에서 호출)
