@@ -444,7 +444,7 @@ class TypingPractice:
         self.tree.pack(fill=tk.BOTH, expand=True)
 
         style = ttk.Style()
-        style.configure("Treeview", font=self.fn_sm, rowheight=22)
+        style.configure("Treeview", font=self.fn_sm, rowheight=38)
         self.tree.tag_configure("folder", foreground="#e67e22")
         self.tree.tag_configure("csv",    foreground="#2980b9")
 
