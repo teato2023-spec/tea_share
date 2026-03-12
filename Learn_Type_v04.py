@@ -833,9 +833,9 @@ class TypingPractice:
         dlg.grab_set()
         dlg.configure(bg="#f0f2f5")
 
-        fn      = Font(family="Malgun Gothic", size=10)
-        fn_bold = Font(family="Malgun Gothic", size=10, weight="bold")
-        fn_sm   = Font(family="Malgun Gothic", size=9)
+        fn      = Font(family="Malgun Gothic", size=22)
+        fn_bold = Font(family="Malgun Gothic", size=22, weight="bold")
+        fn_sm   = Font(family="Malgun Gothic", size=22)
 
         tk.Label(
             dlg, text="CSV를 가져올 위치를 선택하세요",
