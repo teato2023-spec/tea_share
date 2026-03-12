@@ -1524,7 +1524,7 @@ class TypingPractice:
             if self.typing_mode.get() == "복습":
                 messagebox.showinfo("복습 완료", "오늘의 복습을 완료했습니다! 🎉")
             else:
-                messagebox.showinfo("완료", "모든 문장을 완료했습니다! 🎉")
+                messagebox.showinfo("완료", "모든 문장을 완료했습니다!")
 
     def prev_sentence(self):
         if self.practice_indices and self.current_index > 0:
