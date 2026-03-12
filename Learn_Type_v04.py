@@ -249,7 +249,6 @@ class TypingPractice:
             font=self.fn_sm, relief=tk.FLAT, padx=8, pady=3,
             cursor="hand2", bg="#27ae60", fg="white"
         ).pack(side=tk.LEFT, padx=4)
-        tk.Label(bot, text="모드:", bg="#ecf0f1", font=self.fn_sm).pack(side=tk.RIGHT, padx=(8, 2))
         _MODE_COLORS = {"기본": "#3498db", "가리기": "#8e44ad", "복습": "#e67e22"}
         for mode in ["기본", "가리기", "복습"]:
             tk.Radiobutton(
