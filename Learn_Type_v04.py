@@ -1370,7 +1370,7 @@ class TypingPractice:
 
     def _show_banner(self):
         if not self._banner_visible:
-            self._banner_frame.pack(fill=tk.X, padx=12, pady=(2, 4))
+            self._banner_frame.pack(fill=tk.X, padx=12, pady=(2, 2))
             self._banner_visible = True
 
     def _hide_banner(self):
