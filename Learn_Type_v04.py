@@ -1331,9 +1331,10 @@ class TypingPractice:
         self._hide_explanation()
 
     def _update_counter(self):
-        total = len(self.practice_indices)
-        cur   = (self.current_index + 1) if total > 0 else 0
-        self._counter_lbl.config(text=f"{cur} / {total}")
+        total  = len(self.practice_indices)
+        cur    = (self.current_index + 1) if total > 0 else 0
+        prefix = "📅 " if self.typing_mode.get() == "복습" else ""
+        self._counter_lbl.config(text=f"{prefix}{cur} / {total}")
 
     # ── 배너 / 설명 show·hide ─────────────────────────────────────────────────
 
