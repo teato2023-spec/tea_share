@@ -915,7 +915,7 @@ class TypingPractice:
         if not path:
             return
         old = os.path.basename(path)
-        new = simpledialog.askstring("이름 변경", "새 이름:", initialvalue=old, parent=self.root)
+        new = self._ask_string("이름 변경", "새 이름:", initialvalue=old)
         if not new or new == old:
             return
         new_path = os.path.join(os.path.dirname(path), new)
