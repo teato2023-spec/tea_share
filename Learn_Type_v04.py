@@ -215,7 +215,7 @@ class TypingPractice:
         self._banner_frame = tk.Frame(self._middle, bg="#27ae60")
 
         tk.Label(
-            self._banner_frame, text="✓ 완료!",
+            self._banner_frame, text="완료!",
             bg="#27ae60", fg="white",
             font=Font(family="Malgun Gothic", size=22, weight="bold"),
             padx=12, pady=5
