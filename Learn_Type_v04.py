@@ -289,7 +289,7 @@ class TypingPractice:
         # 검색 바
         search_frame = tk.Frame(win, bg="#f0f2f5", pady=5, padx=6)
         search_frame.pack(fill=tk.X)
-        tk.Label(search_frame, text="🔍", bg="#f0f2f5", font=self.fn_sm).pack(side=tk.LEFT)
+        tk.Label(search_frame, text="검색:", bg="#f0f2f5", font=self.fn_sm).pack(side=tk.LEFT)
         self._search_var = tk.StringVar()
         self._search_var.trace_add("write", lambda *_: self._apply_search())
         search_entry = tk.Entry(
