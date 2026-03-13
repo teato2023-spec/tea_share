@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>색채 추출기</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f0f13;
+    color: #e8e4dc;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid #2a2a38;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .logo { font-size: 1.2rem; font-weight: 300; color: #c8a96e; letter-spacing: 0.05em; }
+  .logo-sub { font-size: 0.72rem; color: #555; letter-spacing: 0.15em; text-transform: uppercase; margin-left: auto; }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .left-panel { display: flex; flex-direction: column; gap: 1rem; }
+
+  .mode-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .mode-tab {
+    font-size: 12px; padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid #2a2a38;
+    background: transparent; cursor: pointer;
+    color: #888; transition: all 0.15s;
+    font-family: inherit;
+  }
+  .mode-tab:hover { border-color: #555; color: #ccc; }
+  .mode-tab.active { background: #c8a96e; border-color: #c8a96e; color: #0f0f13; font-weight: 500; }
+
+  .upload-zone {
+    border: 1.5px dashed #2a2a38;
+    border-radius: 12px;
+    min-height: 260px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px; cursor: pointer;
+    transition: all 0.2s;
+    background: #1a1a22;
+    position: relative; overflow: hidden;
+  }
+  .upload-zone:hover { border-color: #555; background: #16161e; }
+  .upload-zone.drag-over { border-color: #c8a96e; }
+
+  .upload-icon { font-size: 40px; opacity: 0.35; pointer-events: none; }
+  .upload-label { font-size: 15px; color: #aaa; pointer-events: none; }
+  .upload-sub { font-size: 12px; color: #555; pointer-events: none; }
+
+  #preview-img {
+    max-width: 100%; max-height: 100%;
+    object-fit: contain; display: none;
+    border-radius: 10px;
+  }
+  .img-loaded .upload-label,
+  .img-loaded .upload-sub,
+  .img-loaded .upload-icon { display: none; }
+  .img-loaded #preview-img { display: block; }
+  .img-loaded { padding: 10px; cursor: default; }
+
+  .change-btn {
+    display: none;
+    position: absolute; bottom: 10px; right: 10px;
+    font-size: 11px;
+    background: rgba(0,0,0,0.7); color: #ccc;
+    border: 1px solid #444;
+    padding: 4px 10px; border-radius: 20px;
+    cursor: pointer; font-family: inherit;
+    transition: all 0.15s;
+  }
+  .change-btn:hover { border-color: #c8a96e; color: #c8a96e; }
+  .img-loaded .change-btn { display: block; }
+
+  #file-input { display: none; }
+  canvas { display: none; }
+
+  .swatches-row {
+    display: flex; height: 80px;
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid #2a2a38;
+  }
+  .swatch {
+    flex: 1; cursor: pointer; position: relative;
+    transition: flex 0.25s ease;
+  }
+  .swatch:hover { flex: 2.5; }
+  .swatch-tip {
+    display: none;
+    position: absolute; bottom: 6px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px; white-space: nowrap;
+    background: rgba(0,0,0,0.75); color: #fff;
+    padding: 2px 7px; border-radius: 10px;
+    pointer-events: none; font-family: monospace;
+  }
+  .swatch:hover .swatch-tip { display: block; }
+
+  .right-panel { display: flex; flex-direction: column; gap: 1.2rem; }
+
+  .section-label {
+    font-size: 10px; color: #555;
+    text-transform: uppercase; letter-spacing: 0.15em;
+    font-weight: 500; margin-bottom: 8px;
+  }
+
+  .color-list { display: flex; flex-direction: column; gap: 6px; }
+  .color-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 8px;
+    background: #1a1a22; border: 1px solid #2a2a38;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .color-row:hover { background: #22222e; border-color: #3a3a4a; }
+  .color-dot {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .color-meta { flex: 1; }
+  .color-hex { font-size: 13px; font-weight: 500; font-family: 'Courier New', monospace; color: #e8e4dc; }
+  .color-rgb { font-size: 10px; color: #666; font-family: 'Courier New', monospace; margin-top: 1px; }
+  .color-hsl { font-size: 10px; color: #555; font-family: 'Courier New', monospace; }
+  .copy-btn {
+    font-size: 11px; padding: 4px 10px; border-radius: 12px;
+    border: 1px solid #3a3a4a; background: transparent;
+    cursor: pointer; color: #888; transition: all 0.15s; font-family: inherit;
+  }
+  .copy-btn:hover { background: #c8a96e; border-color: #c8a96e; color: #0f0f13; }
+  .copy-btn.copied { background: #2d5a3d; border-color: #4a9960; color: #7dda9b; }
+
+  .empty-state {
+    text-align: center; padding: 30px 20px;
+    color: #555; font-size: 13px; line-height: 1.8;
+  }
+
+  .export-section { display: flex; flex-direction: column; gap: 6px; }
+  .exp-btn {
+    font-size: 12px; padding: 8px 14px; border-radius: 8px;
+    border: 1px solid #2a2a38; background: #1a1a22;
+    cursor: pointer; color: #aaa; transition: all 0.15s;
+    font-family: inherit; text-align: left; width: 100%;
+  }
+  .exp-btn:hover { border-color: #555; color: #e8e4dc; background: #22222e; }
+  .exp-btn.done { border-color: #4a9960; color: #7dda9b; background: #1a2d22; }
+
+  .exp-btn.exp-img {
+    border-color: #c8a96e; color: #c8a96e;
+    background: rgba(200,169,110,0.07);
+    font-weight: 500;
+  }
+  .exp-btn.exp-img:hover { background: #c8a96e; color: #0f0f13; border-color: #c8a96e; }
+  .exp-btn.exp-img.done { background: #2d5a3d; border-color: #4a9960; color: #7dda9b; }
+    background: #161620; border: 1px solid #2a2a38;
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 11px; color: #555; line-height: 1.7;
+  }
+
+  @media (max-width: 700px) {
+    .container { grid-template-columns: 1fr; padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🎨 색채 추출기</div>
+  <div class="logo-sub">Image Color Extractor</div>
+</header>
+
+<div class="container">
+
+  <div class="left-panel">
+
+    <div class="mode-tabs" id="modeTabs">
+      <button class="mode-tab active" data-mode="dominant">대표 색상</button>
+      <button class="mode-tab" data-mode="bright">밝은 색조</button>
+      <button class="mode-tab" data-mode="muted">어두운 색조</button>
+      <button class="mode-tab" data-mode="vibrant">생생한 색상</button>
+      <button class="mode-tab" data-mode="grayscale">무채색</button>
+    </div>
+
+    <div class="upload-zone" id="dropZone">
+      <div class="upload-icon">🖼️</div>
+      <div class="upload-label">이미지를 드래그하거나 클릭하여 업로드</div>
+      <div class="upload-sub">JPG · PNG · GIF · WebP 지원</div>
+      <img id="preview-img" alt="preview" />
+      <button class="change-btn" id="changeBtn">이미지 변경</button>
+    </div>
+
+    <div>
+      <div class="section-label">팔레트 미리보기</div>
+      <div class="swatches-row" id="swatchRow">
+        <div class="swatch" style="background:#2a2a38;"></div>
+        <div class="swatch" style="background:#2a2a38;"></div>
+        <div class="swatch" style="background:#2a2a38;"></div>
+        <div class="swatch" style="background:#2a2a38;"></div>
+        <div class="swatch" style="background:#2a2a38;"></div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong style="color:#888;">k-Means 클러스터링</strong> 알고리즘으로 픽셀을 군집화하여 색상을 추출합니다.<br>
+      회화에서 보색·유사색을 분석할 때 활용해 보세요.
+    </div>
+
+  </div>
+
+  <div class="right-panel">
+
+    <div>
+      <div class="section-label">추출된 색상</div>
+      <div class="color-list" id="colorList">
+        <div class="empty-state">이미지를 업로드하면<br>색상이 자동으로 추출됩니다</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">내보내기</div>
+      <div class="export-section">
+        <button class="exp-btn exp-img" id="exportIMG">🖼️ 이미지 + 팔레트 저장 (PNG)</button>
+        <button class="exp-btn" id="exportCSS">📋 CSS 변수로 복사</button>
+        <button class="exp-btn" id="exportHex">📋 HEX 목록 복사</button>
+        <button class="exp-btn" id="exportJSON">📋 JSON으로 복사</button>
+        <button class="exp-btn" id="exportTXT">📋 텍스트로 복사</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<input type="file" id="file-input" accept="image/*" />
+<canvas id="canvas"></canvas>
+
+<script>
+const dropZone   = document.getElementById('dropZone');
+const fileInput  = document.getElementById('file-input');
+const previewImg = document.getElementById('preview-img');
+const changeBtn  = document.getElementById('changeBtn');
+const canvas     = document.getElementById('canvas');
+const ctx        = canvas.getContext('2d');
+const swatchRow  = document.getElementById('swatchRow');
+const colorList  = document.getElementById('colorList');
+
+let currentMode = 'dominant';
+let extractedColors = [];
+let imgLoaded = false;
+
+document.querySelectorAll('.mode-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
+    if (imgLoaded) extractColors();
+  });
+});
+
+dropZone.addEventListener('click', e => {
+  if (!imgLoaded) fileInput.click();
+});
+changeBtn.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
+fileInput.addEventListener('change', e => { if (e.target.files[0]) loadFile(e.target.files[0]); });
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]?.type.startsWith('image/')) loadFile(e.dataTransfer.files[0]);
+});
+
+function loadFile(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    previewImg.onload = () => { imgLoaded = true; extractColors(); };
+    previewImg.src = ev.target.result;
+    dropZone.classList.add('img-loaded');
+  };
+  reader.readAsDataURL(file);
+}
+
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  let h, s, l = (max+min)/2;
+  if (max === min) { h = s = 0; }
+  else {
+    const d = max - min;
+    s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    switch(max){
+      case r: h=((g-b)/d+(g<b?6:0))/6; break;
+      case g: h=((b-r)/d+2)/6; break;
+      case b: h=((r-g)/d+4)/6; break;
+    }
+  }
+  return [Math.round(h*360), Math.round(s*100), Math.round(l*100)];
+}
+
+function colorDist(a, b) {
+  return Math.sqrt((a[0]-b[0])**2+(a[1]-b[1])**2+(a[2]-b[2])**2);
+}
+
+function toHex(rgb) {
+  return '#'+rgb.map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();
+}
+
+function kMeans(data, k, iters=14) {
+  if (data.length <= k) return data;
+  let centroids = [data[Math.floor(Math.random()*data.length)]];
+  for (let c=1; c<k; c++) {
+    let best=null, bestD=-1;
+    for (const px of data.slice(0,300)) {
+      const d = Math.min(...centroids.map(ct=>colorDist(px,ct)));
+      if (d>bestD){ bestD=d; best=px; }
+    }
+    centroids.push(best || data[c]);
+  }
+  for (let iter=0; iter<iters; iter++) {
+    const clusters = Array.from({length:k}, ()=>[]);
+    for (const px of data) {
+      let bi=0, bd=Infinity;
+      centroids.forEach((c,i)=>{ const d=colorDist(px,c); if(d<bd){bd=d;bi=i;} });
+      clusters[bi].push(px);
+    }
+    centroids = clusters.map((cl,i)=>{
+      if (!cl.length) return centroids[i];
+      return cl.reduce((a,p)=>[a[0]+p[0],a[1]+p[1],a[2]+p[2]],[0,0,0])
+               .map(v=>Math.round(v/cl.length));
+    });
+  }
+  return centroids;
+}
+
+function extractColors() {
+  const MAX = 160;
+  const w = previewImg.naturalWidth, h = previewImg.naturalHeight;
+  const ratio = Math.min(MAX/w, MAX/h, 1);
+  canvas.width  = Math.floor(w * ratio);
+  canvas.height = Math.floor(h * ratio);
+  ctx.drawImage(previewImg, 0, 0, canvas.width, canvas.height);
+
+  const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  const pixels = [];
+  const step = Math.max(1, Math.floor(data.length/4/3000));
+  for (let i=0; i<data.length; i+=4*step) {
+    if (data[i+3]>128) pixels.push([data[i], data[i+1], data[i+2]]);
+  }
+
+  let raw = kMeans(pixels, 14);
+  let filtered = raw.map(c=>{
+    const [h,s,l]=rgbToHsl(c[0],c[1],c[2]);
+    return {rgb:c,h,s,l};
+  }).filter(c=>{
+    if (currentMode==='dominant') return true;
+    if (currentMode==='bright')   return c.l > 55;
+    if (currentMode==='muted')    return c.l < 45;
+    if (currentMode==='vibrant')  return c.s > 45;
+    if (currentMode==='grayscale')return c.s < 12;
+    return true;
+  }).map(c=>c.rgb);
+
+  if (filtered.length < 3) filtered = raw;
+  filtered.sort((a,b)=>rgbToHsl(...a)[2]-rgbToHsl(...b)[2]);
+  extractedColors = filtered.slice(0,5);
+  renderPalette();
+}
+
+function renderPalette() {
+  swatchRow.innerHTML = '';
+  extractedColors.forEach(c=>{
+    const hex = toHex(c);
+    const div = document.createElement('div');
+    div.className = 'swatch';
+    div.style.background = hex;
+    const tip = document.createElement('span');
+    tip.className = 'swatch-tip';
+    tip.textContent = hex;
+    div.appendChild(tip);
+    div.addEventListener('click', ()=>copy(hex));
+    swatchRow.appendChild(div);
+  });
+
+  colorList.innerHTML = '';
+  extractedColors.forEach(c=>{
+    const hex = toHex(c);
+    const [h,s,l] = rgbToHsl(c[0],c[1],c[2]);
+    const row = document.createElement('div');
+    row.className = 'color-row';
+
+    const dot = document.createElement('div');
+    dot.className = 'color-dot';
+    dot.style.background = hex;
+
+    const meta = document.createElement('div');
+    meta.className = 'color-meta';
+    meta.innerHTML = `
+      <div class="color-hex">${hex}</div>
+      <div class="color-rgb">RGB(${c[0]}, ${c[1]}, ${c[2]})</div>
+      <div class="color-hsl">HSL(${h}°, ${s}%, ${l}%)</div>
+    `;
+
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = '복사';
+    btn.addEventListener('click', e=>{ e.stopPropagation(); copyWithBtn(hex, btn); });
+    row.addEventListener('click', ()=>copyWithBtn(hex, btn));
+
+    row.appendChild(dot); row.appendChild(meta); row.appendChild(btn);
+    colorList.appendChild(row);
+  });
+}
+
+function copy(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+}
+
+function copyWithBtn(text, btn) {
+  copy(text);
+  btn.textContent = '✓ 복사됨'; btn.classList.add('copied');
+  setTimeout(()=>{ btn.textContent = '복사'; btn.classList.remove('copied'); }, 1500);
+}
+
+function flashBtn(btn, orig) {
+  btn.textContent = '✓ 복사됨'; btn.classList.add('done');
+  setTimeout(()=>{ btn.textContent = orig; btn.classList.remove('done'); }, 1600);
+}
+
+document.getElementById('exportIMG').addEventListener('click', function(){
+  if (!imgLoaded) return;
+
+  // ── 모든 모드 팔레트 미리 계산 ──
+  const ALL_MODES = [
+    { key:'dominant', label:'대표 색상' },
+    { key:'bright',   label:'밝은 색조' },
+    { key:'muted',    label:'어두운 색조' },
+    { key:'vibrant',  label:'생생한 색상' },
+    { key:'grayscale',label:'무채색' }
+  ];
+
+  // 픽셀 샘플 (한 번만)
+  const MAX = 160;
+  const iw = previewImg.naturalWidth, ih = previewImg.naturalHeight;
+  const ratio = Math.min(MAX/iw, MAX/ih, 1);
+  canvas.width  = Math.floor(iw * ratio);
+  canvas.height = Math.floor(ih * ratio);
+  ctx.drawImage(previewImg, 0, 0, canvas.width, canvas.height);
+  const pxData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  const pixels = [];
+  const step = Math.max(1, Math.floor(pxData.length/4/3000));
+  for (let i=0; i<pxData.length; i+=4*step) {
+    if (pxData[i+3]>128) pixels.push([pxData[i], pxData[i+1], pxData[i+2]]);
+  }
+  const raw = kMeans(pixels, 14);
+
+  const modeColors = ALL_MODES.map(m => {
+    let filtered = raw.map(c => {
+      const [h,s,l] = rgbToHsl(c[0],c[1],c[2]);
+      return {rgb:c,h,s,l};
+    }).filter(c => {
+      if (m.key==='dominant')  return true;
+      if (m.key==='bright')    return c.l > 55;
+      if (m.key==='muted')     return c.l < 45;
+      if (m.key==='vibrant')   return c.s > 45;
+      if (m.key==='grayscale') return c.s < 12;
+    }).map(c=>c.rgb);
+    if (filtered.length < 3) filtered = raw;
+    filtered.sort((a,b)=>rgbToHsl(...a)[2]-rgbToHsl(...b)[2]);
+    return { label: m.label, colors: filtered.slice(0,5) };
+  });
+
+  // ── 레이아웃 상수 ──
+  const PAD      = 32;
+  const IMG_MAX  = 1200;
+  const sc       = iw > IMG_MAX ? IMG_MAX/iw : 1;
+  const outW     = Math.floor(iw * sc);
+  const outH     = Math.floor(ih * sc);
+
+  const ROW_LABEL_H = 22;  // 모드 이름 줄 높이
+  const SWATCH_H    = 56;  // 색상 블록 높이
+  const TEXT_H      = 46;  // HEX+RGB 텍스트 높이
+  const ROW_H       = ROW_LABEL_H + SWATCH_H + TEXT_H + 12; // 행 전체 높이
+  const HEADER_H    = 36;  // 최상단 타이틀 높이
+
+  const totalW = outW + PAD * 2;
+  const totalH = PAD + HEADER_H + outH + PAD + (ROW_H * ALL_MODES.length) + PAD;
+
+  const oc = document.createElement('canvas');
+  oc.width  = totalW;
+  oc.height = totalH;
+  const ox = oc.getContext('2d');
+
+  // ── 배경 ──
+  ox.fillStyle = '#0f0f13';
+  ox.fillRect(0, 0, totalW, totalH);
+
+  // ── 타이틀 ──
+  ox.fillStyle = '#c8a96e';
+  ox.font = 'bold 15px "Courier New", monospace';
+  ox.fillText('Color Palette', PAD, PAD + 18);
+  ox.fillStyle = '#444';
+  ox.font = '11px "Courier New", monospace';
+  ox.textAlign = 'right';
+  ox.fillText('색채 추출기', totalW - PAD, PAD + 18);
+  ox.textAlign = 'left';
+
+  // ── 원본 이미지 ──
+  const imgY = PAD + HEADER_H;
+  ox.save();
+  roundRect(ox, PAD, imgY, outW, outH, 8);
+  ox.clip();
+  ox.drawImage(previewImg, PAD, imgY, outW, outH);
+  ox.restore();
+
+  // ── 구분선 ──
+  ox.strokeStyle = '#2a2a38';
+  ox.lineWidth = 1;
+  ox.beginPath();
+  ox.moveTo(PAD, imgY + outH + PAD/2);
+  ox.lineTo(totalW - PAD, imgY + outH + PAD/2);
+  ox.stroke();
+
+  // ── 모드별 팔레트 행 ──
+  let curY = imgY + outH + PAD;
+
+  modeColors.forEach(({label, colors}) => {
+    // 모드 라벨
+    ox.fillStyle = '#888';
+    ox.font = '11px -apple-system, sans-serif';
+    ox.fillText(label, PAD, curY + 14);
+
+    // 구분 점선
+    ox.strokeStyle = '#2a2a38';
+    ox.lineWidth = 0.5;
+    ox.setLineDash([3,4]);
+    ox.beginPath();
+    ox.moveTo(PAD + 72, curY + 10);
+    ox.lineTo(totalW - PAD, curY + 10);
+    ox.stroke();
+    ox.setLineDash([]);
+
+    const swatchY = curY + ROW_LABEL_H;
+    const swatchW = Math.floor(outW / colors.length);
+
+    colors.forEach((c, i) => {
+      const x = PAD + i * swatchW;
+      const w = (i === colors.length-1) ? (outW - i*swatchW) : swatchW;
+      const hex = toHex(c);
+      const [hh,ss,ll] = rgbToHsl(c[0],c[1],c[2]);
+
+      // 색상 블록
+      ox.fillStyle = hex;
+      const isFirst = i===0, isLast = i===colors.length-1;
+      ox.beginPath();
+      const r = 6;
+      ox.moveTo(x+(isFirst?r:0), swatchY);
+      ox.lineTo(x+w-(isLast?r:0), swatchY);
+      if (isLast)  ox.arcTo(x+w, swatchY,   x+w, swatchY+r, r); else ox.lineTo(x+w, swatchY);
+      ox.lineTo(x+w, swatchY+SWATCH_H);
+      ox.lineTo(x,   swatchY+SWATCH_H);
+      if (isFirst) ox.arcTo(x, swatchY, x+r, swatchY, r); else ox.lineTo(x, swatchY);
+      ox.closePath();
+      ox.fill();
+
+      // HEX 텍스트
+      ox.textAlign = 'center';
+      const cx = x + w/2;
+      ox.fillStyle = '#e8e4dc';
+      ox.font = '500 11px "Courier New", monospace';
+      ox.fillText(hex, cx, swatchY + SWATCH_H + 16);
+      ox.fillStyle = '#555';
+      ox.font = '9px "Courier New", monospace';
+      ox.fillText(`${c[0]},${c[1]},${c[2]}`, cx, swatchY + SWATCH_H + 30);
+      ox.fillText(`H${hh} S${ss}% L${ll}%`, cx, swatchY + SWATCH_H + 42);
+      ox.textAlign = 'left';
+    });
+
+    curY += ROW_H;
+  });
+
+  // ── 다운로드 ──
+  const link = document.createElement('a');
+  link.download = 'color-palette.png';
+  link.href = oc.toDataURL('image/png');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  flashBtn(this, '🖼️ 이미지 + 팔레트 저장 (PNG)');
+});
+
+// 둥근 사각형 Path 헬퍼
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x+w, y,   x+w, y+r,   r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
+  ctx.lineTo(x+r,  y+h);
+  ctx.arcTo(x,   y+h, x,   y+h-r, r);
+  ctx.lineTo(x,   y+r);
+  ctx.arcTo(x,   y,   x+r, y,     r);
+  ctx.closePath();
+}
+
+document.getElementById('exportCSS').addEventListener('click', function(){
+  const css = extractedColors.map((c,i)=>`  --color-${i+1}: ${toHex(c)};`).join('\n');
+  copy(`:root {\n${css}\n}`);
+  flashBtn(this, '📋 CSS 변수로 복사');
+});
+
+document.getElementById('exportHex').addEventListener('click', function(){
+  copy(extractedColors.map(c=>toHex(c)).join(', '));
+  flashBtn(this, '📋 HEX 목록 복사');
+});
+
+document.getElementById('exportJSON').addEventListener('click', function(){
+  const json = JSON.stringify(extractedColors.map(c=>{
+    const [h,s,l]=rgbToHsl(c[0],c[1],c[2]);
+    return { hex:toHex(c), rgb:{r:c[0],g:c[1],b:c[2]}, hsl:{h,s,l} };
+  }), null, 2);
+  copy(json);
+  flashBtn(this, '📋 JSON으로 복사');
+});
+
+document.getElementById('exportTXT').addEventListener('click', function(){
+  const lines = extractedColors.map((c,i)=>{
+    const [h,s,l]=rgbToHsl(c[0],c[1],c[2]);
+    return `색상 ${i+1}: ${toHex(c)}  |  RGB(${c[0]},${c[1]},${c[2]})  |  HSL(${h}°,${s}%,${l}%)`;
+  }).join('\n');
+  copy('=== 색채 추출 결과 ===\n'+lines);
+  flashBtn(this, '📋 텍스트로 복사');
+});
+</script>
+</body>
+</html>
