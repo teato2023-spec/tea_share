@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn_Type</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; background: #f0f2f5; font-size: 16px; }
+
+  /* 헤더 */
+  #header { background: #2c3e50; color: white; padding: 10px 16px; font-size: 20px; font-weight: bold; }
+
+  /* 네비게이션 바 */
+  #nav { background: #ecf0f1; padding: 6px 10px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  #nav button { background: #ecf0f1; border: none; padding: 5px 10px; cursor: pointer; font-size: 15px; border-radius: 3px; }
+  #nav button:hover { background: #d5d8dc; }
+  #counter { font-size: 15px; padding: 0 8px; color: #2c3e50; min-width: 70px; text-align: center; }
+  #stats { margin-left: auto; font-size: 14px; color: #555; }
+  #random-label { display: flex; align-items: center; gap: 4px; font-size: 15px; cursor: pointer; }
+
+  /* 연습 문장 영역 */
+  .section-label { font-weight: bold; font-size: 14px; color: #555; margin-bottom: 4px; }
+  #target-wrap { margin: 10px 12px 4px; }
+  #target-display {
+    background: #1e2a38; color: #e0e0e0; padding: 10px 12px;
+    font-family: 'Courier New', monospace; font-size: 18px;
+    min-height: 48px; line-height: 1.6; word-break: break-all;
+    border-radius: 4px; white-space: pre-wrap;
+  }
+  #target-display .correct   { color: #2ecc71; }
+  #target-display .wrong     { color: #e74c3c; text-decoration: line-through; }
+  #target-display .cursor-ch { background: #2980b9; color: #fff; }
+  #target-display .pending   { color: #bdc3c7; }
+
+  /* 해석 / 설명 */
+  #desc-wrap { margin: 4px 12px; display: none; }
+  #desc-box { background: #eaf4fb; border-left: 4px solid #1a6898; padding: 8px 12px; color: #1a5276; font-size: 16px; border-radius: 3px; }
+  #expl-wrap { margin: 4px 12px; display: none; }
+  #expl-box { background: #f0fff0; border-left: 4px solid #1a7a3a; padding: 8px 12px; color: #1a5226; font-size: 16px; border-radius: 3px; }
+
+  /* 완료 배너 */
+  #banner { background: #27ae60; color: white; padding: 6px 12px; display: none; align-items: center; gap: 8px; flex-wrap: wrap; margin: 4px 12px; border-radius: 4px; }
+  #banner .banner-title { font-weight: bold; font-size: 16px; }
+  #banner .hint { font-size: 14px; color: #d5f5e3; margin-left: auto; }
+  #srs-btns { display: flex; gap: 4px; }
+  #srs-btns button { border: none; color: white; font-weight: bold; font-size: 14px; padding: 4px 10px; cursor: pointer; border-radius: 3px; }
+  #btn-again  { background: #e74c3c; }
+  #btn-hard   { background: #e67e22; }
+  #btn-normal { background: #3498db; }
+  #btn-easy   { background: #2ecc71; }
+
+  /* 입력 영역 */
+  #input-wrap { margin: 4px 12px 10px; }
+  #input-text {
+    width: 100%; background: #fffef7; border: 1px solid #ccc;
+    padding: 10px 12px; font-family: 'Courier New', monospace; font-size: 18px;
+    min-height: 48px; resize: none; border-radius: 4px; outline: none;
+    line-height: 1.6;
+  }
+  #input-text:focus { border-color: #3498db; }
+
+  /* 하단 바 */
+  #bottom-bar { background: #ecf0f1; padding: 6px 10px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  #btn-memorize { background: #27ae60; color: white; border: none; padding: 5px 12px; cursor: pointer; font-size: 15px; border-radius: 3px; }
+  #btn-memorize:hover { background: #219a52; }
+  .mode-btn { border: 1px solid #ccc; background: #ecf0f1; padding: 4px 12px; cursor: pointer; font-size: 15px; border-radius: 3px; }
+  .mode-btn.active-기본   { background: #3498db; color: white; border-color: #3498db; }
+  .mode-btn.active-가리기 { background: #8e44ad; color: white; border-color: #8e44ad; }
+  .mode-btn.active-복습   { background: #e67e22; color: white; border-color: #e67e22; }
+
+  /* 모달 공통 */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: none; z-index: 100; justify-content: center; align-items: flex-start; padding-top: 40px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #f8f9fa; border-radius: 6px; width: 760px; max-width: 96vw; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; }
+  .modal-header { background: #bdc3c7; padding: 8px 14px; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: space-between; }
+  .modal-body { flex: 1; overflow-y: auto; padding: 10px; }
+  .modal-footer { padding: 8px 14px; display: flex; gap: 6px; justify-content: flex-end; background: #f0f2f5; }
+  .modal-footer button, .modal-body button {
+    border: none; padding: 6px 14px; cursor: pointer; border-radius: 3px; font-size: 14px;
+  }
+  .btn-green  { background: #27ae60; color: white; }
+  .btn-red    { background: #e74c3c; color: white; }
+  .btn-gray   { background: #7f8c8d; color: white; }
+  .btn-blue   { background: #3498db; color: white; }
+
+  /* 문장 목록 */
+  #sent-modal .modal { width: 860px; }
+  #search-bar { display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: #f0f2f5; border-bottom: 1px solid #ddd; }
+  #search-input { flex: 1; padding: 5px 8px; border: 1px solid #ccc; border-radius: 3px; font-size: 14px; }
+  #sent-list { width: 100%; border-collapse: collapse; font-size: 14px; }
+  #sent-list th { background: #dfe6e9; padding: 6px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
+  #sent-list td { padding: 6px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
+  #sent-list tr.section-hdr td { background: #dfe6e9; font-weight: bold; color: #555; }
+  #sent-list tr.memorized td { color: #27ae60; }
+  #sent-list tr.search-match td { background: #fff3cd; }
+  #sent-list tr.normal:hover td { background: #f5f5f5; cursor: pointer; }
+  .mem-check { cursor: pointer; text-align: center; user-select: none; font-size: 16px; }
+
+  /* 인라인 수정 */
+  #inline-edit { background: #fffde7; border: 1px solid #f9ca24; border-radius: 4px; padding: 10px; margin-top: 8px; display: none; }
+  #inline-edit label { font-size: 13px; font-weight: bold; display: block; margin-bottom: 2px; }
+  #inline-edit textarea { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 3px; font-size: 14px; resize: vertical; margin-bottom: 6px; }
+  #inline-txt  { background: #1e2a38; color: #e0e0e0; font-family: monospace; }
+  #inline-desc { background: #eaf4fb; color: #1a5276; }
+  #inline-expl { background: #f0fff0; color: #1a5226; }
+  .inline-btns { display: flex; gap: 6px; justify-content: flex-end; }
+
+  /* 파일 관리 모달 */
+  #file-modal .modal { width: 460px; }
+  #file-list { list-style: none; padding: 4px 0; }
+  #file-list li { padding: 6px 10px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; border-radius: 3px; }
+  #file-list li:hover { background: #d5e8f5; }
+  #file-list li.folder { color: #e67e22; font-weight: bold; }
+  #file-list li.csv-file { color: #2980b9; }
+  #file-list li.selected { background: #d5e8f5; }
+  .file-ctx { display: none; position: fixed; background: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 200; min-width: 160px; }
+  .file-ctx div { padding: 8px 14px; cursor: pointer; font-size: 14px; }
+  .file-ctx div:hover { background: #f0f2f5; }
+  .file-ctx hr { border: none; border-top: 1px solid #eee; margin: 2px 0; }
+
+  /* 문장 추가/수정 다이얼로그 */
+  #sentence-dlg .modal { width: 600px; }
+  #sentence-dlg textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 3px; font-size: 15px; resize: vertical; margin-bottom: 4px; }
+  #sdlg-txt  { background: #1e2a38; color: #e0e0e0; font-family: monospace; min-height: 60px; }
+  #sdlg-desc { background: #eaf4fb; color: #1a5276; min-height: 48px; }
+  #sdlg-expl { background: #f0fff0; color: #1a5226; min-height: 48px; }
+  #sentence-dlg label { font-size: 14px; font-weight: bold; display: block; margin: 8px 0 2px; }
+
+  /* 옵션 */
+  #options-dlg .modal { width: 320px; }
+  #font-size-select { padding: 4px 8px; font-size: 14px; border-radius: 3px; border: 1px solid #ccc; }
+
+  .hint-text { font-size: 12px; color: #95a5a6; padding: 4px 10px; }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div id="header">  Learn_Type</div>
+
+<!-- 네비게이션 바 -->
+<div id="nav">
+  <button onclick="prevSentence()">&#60; 이전</button>
+  <span id="counter">0 / 0</span>
+  <button onclick="nextSentence()">다음 &#62;</button>
+  <button onclick="restartAll()">다시시작</button>
+  <button onclick="openSentModal()">문장 목록</button>
+  <button onclick="openFileModal()">파일 관리</button>
+  <button onclick="openOptionsModal()">옵션</button>
+  <span id="stats" style="margin-left:auto">타수: —  |  시간: —</span>
+  <label id="random-label"><input type="checkbox" id="random-chk" checked onchange="toggleRandom()"> 랜덤</label>
+</div>
+
+<!-- 연습 문장 -->
+<div id="target-wrap">
+  <div class="section-label">연습 문장</div>
+  <div id="target-display"><span class="pending">파일 관리에서 CSV를 불러오세요</span></div>
+</div>
+
+<!-- 해석 -->
+<div id="desc-wrap"><div id="desc-box"></div></div>
+<!-- 설명 -->
+<div id="expl-wrap"><div id="expl-box"></div></div>
+
+<!-- 완료 배너 -->
+<div id="banner">
+  <span class="banner-title">완료!</span>
+  <div id="srs-btns">
+    <button id="btn-again"  onclick="rateAndNext(0)">다시</button>
+    <button id="btn-hard"   onclick="rateAndNext(1)">어려움</button>
+    <button id="btn-normal" onclick="rateAndNext(2)">보통</button>
+    <button id="btn-easy"   onclick="rateAndNext(3)">쉬움</button>
+  </div>
+  <span class="hint">Enter = 보통</span>
+</div>
+
+<!-- 입력 -->
+<div id="input-wrap">
+  <div class="section-label">입력</div>
+  <textarea id="input-text" rows="2" placeholder="여기에 입력하세요..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+</div>
+
+<!-- 하단 바 -->
+<div id="bottom-bar">
+  <button id="btn-memorize" onclick="memorizeCurrent()">암기 완료</button>
+  <span style="margin-left:auto; display:flex; gap:4px;">
+    <button class="mode-btn active-기본" data-mode="기본"   onclick="setMode('기본')">기본</button>
+    <button class="mode-btn"            data-mode="가리기" onclick="setMode('가리기')">가리기</button>
+    <button class="mode-btn"            data-mode="복습"   onclick="setMode('복습')">복습</button>
+  </span>
+</div>
+
+<!-- ═══════════════════════════ 문장 목록 모달 ════════════════════════════ -->
+<div class="modal-overlay" id="sent-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span>문장 목록 <span id="sent-modal-fname" style="font-weight:normal;font-size:13px;color:#555;"></span></span>
+      <button class="btn-gray" onclick="closeSentModal()" style="padding:2px 10px;">✕</button>
+    </div>
+    <div id="search-bar">
+      <span style="font-size:14px;">검색:</span>
+      <input type="text" id="search-input" placeholder="문장/해석 검색..." oninput="applySearch()">
+      <button onclick="document.getElementById('search-input').value='';applySearch();" style="border:none;background:none;cursor:pointer;font-size:16px;">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0;">
+      <table id="sent-list">
+        <thead><tr><th style="width:50px;">암기</th><th>문장</th></tr></thead>
+        <tbody id="sent-tbody"></tbody>
+      </table>
+      <div id="inline-edit">
+        <label>문장:</label>
+        <textarea id="inline-txt" rows="2"></textarea>
+        <label>해석:</label>
+        <textarea id="inline-desc" rows="2"></textarea>
+        <label>설명:</label>
+        <textarea id="inline-expl" rows="2"></textarea>
+        <div class="inline-btns">
+          <button class="btn-green" onclick="saveInlineEdit()">저장</button>
+          <button class="btn-gray"  onclick="hideInlineEdit()">취소</button>
+        </div>
+      </div>
+      <div class="hint-text">암기 열 클릭 → 암기 토글  |  행 클릭 → 수정 패널</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-green" onclick="openSentenceDlg()">+ 추가</button>
+      <button class="btn-red"   onclick="deleteSelectedSentence()">삭제</button>
+      <button class="btn-gray"  onclick="closeSentModal()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ 파일 관리 모달 ════════════════════════════ -->
+<div class="modal-overlay" id="file-modal">
+  <div class="modal" id="file-modal-inner">
+    <div class="modal-header">
+      <span>파일 관리</span>
+      <button class="btn-gray" onclick="closeFileModal()" style="padding:2px 10px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+        <button class="btn-blue"  onclick="importCSV()">📂 CSV 불러오기</button>
+        <button class="btn-green" onclick="newCSVFromData()">새 CSV 만들기</button>
+        <button class="btn-gray"  onclick="exportCSV()">💾 CSV 저장</button>
+      </div>
+      <ul id="file-list"></ul>
+      <div class="hint-text">CSV 불러오기 버튼으로 파일을 선택하거나, 여기에 CSV 파일을 드래그하세요.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-gray" onclick="closeFileModal()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ 문장 추가/수정 다이얼로그 ════════════════════════════ -->
+<div class="modal-overlay" id="sentence-dlg">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="sdlg-title">문장 추가</span>
+      <button class="btn-gray" onclick="closeSentenceDlg()" style="padding:2px 10px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <label>명령어 / 문장:</label>
+      <textarea id="sdlg-txt" rows="3"></textarea>
+      <label>해석 (선택):</label>
+      <textarea id="sdlg-desc" rows="2"></textarea>
+      <label>설명 (선택):</label>
+      <textarea id="sdlg-expl" rows="2"></textarea>
+      <div style="font-size:12px;color:#888;margin-top:6px;">Ctrl+Enter: 확인  /  Esc: 취소</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-blue" onclick="confirmSentenceDlg()">확인</button>
+      <button class="btn-gray" onclick="closeSentenceDlg()">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ 옵션 다이얼로그 ════════════════════════════ -->
+<div class="modal-overlay" id="options-dlg">
+  <div class="modal" style="width:320px;">
+    <div class="modal-header">
+      <span>옵션</span>
+      <button class="btn-gray" onclick="closeOptionsModal()" style="padding:2px 10px;">✕</button>
+    </div>
+    <div class="modal-body" style="padding:16px;">
+      <label style="font-size:14px;font-weight:bold;">글자 크기</label>
+      <select id="font-size-select" onchange="changeFontSize(this.value)" style="margin-top:8px;display:block;">
+        <option value="14">14</option>
+        <option value="16">16</option>
+        <option value="18" selected>18</option>
+        <option value="20">20</option>
+        <option value="22">22</option>
+        <option value="24">24</option>
+        <option value="26">26</option>
+        <option value="28">28</option>
+        <option value="32">32</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-gray" onclick="closeOptionsModal()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 우클릭 컨텍스트 메뉴 -->
+<div class="file-ctx" id="file-ctx">
+  <div onclick="ctxNewCSV()">CSV 새로 만들기</div>
+  <div onclick="importCSV()">CSV 불러오기</div>
+  <hr>
+  <div onclick="ctxRename()">이름 변경</div>
+  <div onclick="ctxDelete()" style="color:#e74c3c;">삭제</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// 상태
+// ═══════════════════════════════════════════════════
+let sentenceData    = [];   // [{text, desc, expl}]
+let practiceIndices = [];
+let currentIndex    = 0;
+let memorizedSet    = new Set();
+let typingMode      = '기본';
+let randomMode      = true;
+let startTime       = null;
+let isTyping        = false;
+let completed       = false;
+let hiddenRevealed  = false;
+let srsData         = {};
+let currentFileName = null;
+
+// 인라인 수정
+let inlineIdx = null;
+// 문장 추가/수정
+let sdlgMode  = 'add';  // 'add' | 'edit'
+let sdlgIdx   = null;
+// 선택된 문장 행
+let selectedSentIdx = null;
+
+// 파일 관리: 메모리 내 파일 목록 [{name, data:[]}]
+let fileList = [];
+let selectedFileIdx = null;
+
+// ═══════════════════════════════════════════════════
+// SRS SM-2
+// ═══════════════════════════════════════════════════
+function getSRS(text) {
+  if (!srsData[text]) {
+    srsData[text] = { interval: 1, ease_factor: 2.5, next_review: todayISO(), reps: 0 };
+  }
+  return srsData[text];
+}
+function applySM2(entry, rating) {
+  let { interval: ivl, ease_factor: ef, reps } = entry;
+  if (rating === 0) {
+    ivl = 1; ef = Math.max(1.3, ef - 0.20); reps = 0;
+  } else if (rating === 1) {
+    ivl = Math.max(1, Math.round(ivl * 1.2)); ef = Math.max(1.3, ef - 0.15); reps++;
+  } else if (rating === 2) {
+    if (reps === 0) ivl = 1;
+    else if (reps === 1) ivl = 3;
+    else ivl = Math.max(1, Math.round(ivl * ef));
+    reps++;
+  } else {
+    if (reps === 0) ivl = 4;
+    else if (reps === 1) ivl = 5;
+    else ivl = Math.max(1, Math.round(ivl * ef * 1.3));
+    ef = Math.min(3.5, ef + 0.15); reps++;
+  }
+  const next = new Date(); next.setDate(next.getDate() + ivl);
+  return { interval: ivl, ease_factor: Math.round(ef * 100) / 100, next_review: next.toISOString().slice(0,10), reps };
+}
+function saveSRS() {
+  if (!currentFileName) return;
+  try { localStorage.setItem('srs_' + currentFileName, JSON.stringify(srsData)); } catch(e) {}
+}
+function loadSRS() {
+  if (!currentFileName) { srsData = {}; return; }
+  try {
+    const d = localStorage.getItem('srs_' + currentFileName);
+    srsData = d ? JSON.parse(d) : {};
+  } catch(e) { srsData = {}; }
+}
+function todayISO() { return new Date().toISOString().slice(0,10); }
+function rateAndNext(rating) {
+  if (!practiceIndices.length) return;
+  const text = curText();
+  srsData[text] = applySM2(getSRS(text), rating);
+  saveSRS();
+  nextSentence();
+}
+
+// ═══════════════════════════════════════════════════
+// CSV 파싱 / 생성
+// ═══════════════════════════════════════════════════
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/);
+  const result = [];
+  if (!lines.length) return result;
+  const header = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/^"|"$/g,''));
+  let ti = 0, di = -1, ei = -1;
+  if (header.includes('text')) ti = header.indexOf('text');
+  for (const alias of ['description','설명','desc']) if (header.includes(alias)) { di = header.indexOf(alias); break; }
+  for (const alias of ['explanation','해석','expl']) if (header.includes(alias)) { ei = header.indexOf(alias); break; }
+  for (let i = 1; i < lines.length; i++) {
+    const row = parseCSVRow(lines[i]);
+    if (!row || row.length <= ti) continue;
+    const t = row[ti].trim();
+    if (!t) continue;
+    result.push({ text: t, desc: di >= 0 && row[di] ? row[di].trim() : '', expl: ei >= 0 && row[ei] ? row[ei].trim() : '' });
+  }
+  return result;
+}
+function parseCSVRow(line) {
+  const res = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === '"') { inQ = !inQ; }
+    else if (line[i] === ',' && !inQ) { res.push(cur); cur = ''; }
+    else cur += line[i];
+  }
+  res.push(cur);
+  return res;
+}
+function toCSVString(data) {
+  const esc = s => '"' + (s||'').replace(/"/g,'""') + '"';
+  let out = 'text,description,explanation\n';
+  for (const row of data) out += [esc(row.text), esc(row.desc), esc(row.expl)].join(',') + '\n';
+  return out;
+}
+
+// ═══════════════════════════════════════════════════
+// 현재 문장 헬퍼
+// ═══════════════════════════════════════════════════
+function curText() { return practiceIndices.length ? sentenceData[practiceIndices[currentIndex]].text : ''; }
+function curDesc() { return practiceIndices.length ? sentenceData[practiceIndices[currentIndex]].desc : ''; }
+function curExpl() { return practiceIndices.length ? sentenceData[practiceIndices[currentIndex]].expl : ''; }
+
+// ═══════════════════════════════════════════════════
+// 연습 인덱스 빌드
+// ═══════════════════════════════════════════════════
+function buildPracticeIndices() {
+  if (typingMode === '복습') {
+    const today = todayISO();
+    practiceIndices = sentenceData
+      .map((_, i) => i)
+      .filter(i => !memorizedSet.has(i) && getSRS(sentenceData[i].text).next_review <= today);
+  } else {
+    practiceIndices = sentenceData.map((_, i) => i).filter(i => !memorizedSet.has(i));
+  }
+  if (randomMode) shuffle(practiceIndices);
+  currentIndex = 0;
+}
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// 문장 로드 / 리셋
+// ═══════════════════════════════════════════════════
+function loadSentence() { resetCurrent(); }
+
+function resetCurrent() {
+  const inp = document.getElementById('input-text');
+  inp.value = '';
+  inp.style.height = '';
+  startTime = null; isTyping = false; completed = false; hiddenRevealed = false;
+  hideBanner();
+  document.getElementById('stats').textContent = '타수: —  |  시간: —';
+  updateCounter();
+  refreshTarget('');
+  if (typingMode === '가리기') updateDescDisplay();
+  else { hideDesc(); hideExpl(); }
+  inp.focus();
+}
+
+function clearPracticeArea() {
+  document.getElementById('target-display').innerHTML = '<span class="pending">파일을 선택하세요</span>';
+  document.getElementById('input-text').value = '';
+  document.getElementById('counter').textContent = '0 / 0';
+  document.getElementById('stats').textContent = '타수: —  |  시간: —';
+  hideBanner(); hideDesc(); hideExpl();
+}
+
+function updateCounter() {
+  const total = practiceIndices.length;
+  const cur   = total > 0 ? currentIndex + 1 : 0;
+  const prefix = typingMode === '복습' ? '📅 ' : '';
+  document.getElementById('counter').textContent = prefix + cur + ' / ' + total;
+}
+
+// ═══════════════════════════════════════════════════
+// 타겟 렌더링
+// ═══════════════════════════════════════════════════
+function refreshTarget(typed) {
+  const el = document.getElementById('target-display');
+  if (!practiceIndices.length) return;
+  const target = curText();
+  const mode   = typingMode;
+  el.innerHTML = '';
+
+  for (let i = 0; i < target.length; i++) {
+    const span = document.createElement('span');
+    if (mode === '가리기') {
+      if (i < typed.length) {
+        if (typed[i] === target[i]) { span.className = 'correct'; span.textContent = target[i]; }
+        else { span.className = 'wrong'; span.textContent = '░'; }
+      } else if (i === typed.length) {
+        span.className = 'cursor-ch'; span.textContent = '░';
+      } else {
+        span.className = 'pending'; span.textContent = '░';
+      }
+    } else {
+      if (i < typed.length) {
+        span.className = typed[i] === target[i] ? 'correct' : 'wrong';
+        span.textContent = target[i];
+      } else if (i === typed.length) {
+        span.className = 'cursor-ch'; span.textContent = target[i];
+      } else {
+        span.className = 'pending'; span.textContent = target[i];
+      }
+    }
+    el.appendChild(span);
+  }
+  autoResizeTextarea(document.getElementById('input-text'));
+}
+
+// ═══════════════════════════════════════════════════
+// 배너 / 해석 / 설명
+// ═══════════════════════════════════════════════════
+function showBanner() { document.getElementById('banner').style.display = 'flex'; }
+function hideBanner() { document.getElementById('banner').style.display = 'none'; }
+function showDesc(t)  { document.getElementById('desc-box').textContent = t; document.getElementById('desc-wrap').style.display = 'block'; }
+function hideDesc()   { document.getElementById('desc-wrap').style.display = 'none'; }
+function showExpl(t)  { document.getElementById('expl-box').textContent = t; document.getElementById('expl-wrap').style.display = 'block'; }
+function hideExpl()   { document.getElementById('expl-wrap').style.display = 'none'; }
+function updateDescDisplay() {
+  const d = curDesc(), e = curExpl();
+  d ? showDesc(d) : hideDesc();
+  e ? showExpl(e) : hideExpl();
+}
+
+// ═══════════════════════════════════════════════════
+// 입력 이벤트
+// ═══════════════════════════════════════════════════
+document.getElementById('input-text').addEventListener('input', onInput);
+document.getElementById('input-text').addEventListener('keydown', onKeydown);
+
+function onInput(e) {
+  if (!practiceIndices.length) return;
+  const typed = e.target.value;
+  if (typed && !isTyping) { startTime = Date.now(); isTyping = true; }
+  refreshTarget(typed);
+  updateStats(typed);
+  checkCompletion(typed);
+  autoResizeTextarea(e.target);
+}
+function onKeydown(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (typingMode === '가리기' && practiceIndices.length) {
+      if (completed || hiddenRevealed) rateAndNext(2);
+    } else if (completed) {
+      nextSentence();
+    }
+  }
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (typingMode !== '가리기' || !practiceIndices.length || completed) return;
+    hiddenRevealed ? hideRevealed() : revealHidden();
+  }
+}
+function checkCompletion(typed) {
+  if (typed === curText() && !completed) {
+    completed = true;
+    if (typingMode === '가리기') { showBanner(); refreshTarget(typed); }
+    else if (typingMode === '복습') showBanner();
+    updateDescDisplay();
+  }
+}
+function updateStats(typed) {
+  if (!typed || !startTime) return;
+  const target  = curText();
+  const elapsed = (Date.now() - startTime) / 1000;
+  const cpm     = typed.length / elapsed * 60;
+  document.getElementById('stats').textContent = `타수: ${Math.round(cpm)} CPM  |  시간: ${elapsed.toFixed(1)}초`;
+}
+function revealHidden() {
+  const el = document.getElementById('target-display');
+  el.innerHTML = '';
+  for (const ch of curText()) {
+    const span = document.createElement('span'); span.className = 'pending'; span.textContent = ch; el.appendChild(span);
+  }
+  hiddenRevealed = true; updateDescDisplay();
+}
+function hideRevealed() {
+  hiddenRevealed = false;
+  refreshTarget(document.getElementById('input-text').value);
+}
+function autoResizeTextarea(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+// ═══════════════════════════════════════════════════
+// 네비게이션
+// ═══════════════════════════════════════════════════
+function nextSentence() {
+  if (!practiceIndices.length) return;
+  if (currentIndex < practiceIndices.length - 1) {
+    currentIndex++; loadSentence();
+  } else {
+    alert(typingMode === '복습' ? '오늘의 복습을 완료했습니다!' : '모든 문장을 완료했습니다!');
+  }
+}
+function prevSentence() {
+  if (practiceIndices.length && currentIndex > 0) { currentIndex--; loadSentence(); }
+}
+function restartAll() {
+  if (!sentenceData.length) return;
+  buildPracticeIndices();
+  if (practiceIndices.length) loadSentence();
+}
+function memorizeCurrent() {
+  if (!practiceIndices.length) return;
+  memorizedSet.add(practiceIndices[currentIndex]);
+  buildPracticeIndices();
+  if (!practiceIndices.length) { clearPracticeArea(); alert('모든 문장을 암기 완료했습니다!'); return; }
+  currentIndex = Math.min(currentIndex, practiceIndices.length - 1);
+  loadSentence();
+  refreshSentTable();
+}
+function toggleRandom() {
+  randomMode = document.getElementById('random-chk').checked;
+  buildPracticeIndices();
+  if (practiceIndices.length) loadSentence();
+}
+
+// ═══════════════════════════════════════════════════
+// 모드 변경
+// ═══════════════════════════════════════════════════
+function setMode(mode) {
+  typingMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => {
+    b.className = 'mode-btn' + (b.dataset.mode === mode ? ' active-' + mode : '');
+  });
+  buildPracticeIndices();
+  if (!practiceIndices.length) {
+    clearPracticeArea();
+    if (mode === '복습' && sentenceData.length) alert('오늘 복습할 문장이 없습니다.\n내일 다시 확인하세요!');
+    return;
+  }
+  loadSentence();
+}
+
+// ═══════════════════════════════════════════════════
+// 파일 관리
+// ═══════════════════════════════════════════════════
+function openFileModal()  { document.getElementById('file-modal').classList.add('open'); renderFileList(); }
+function closeFileModal() { document.getElementById('file-modal').classList.remove('open'); }
+
+function importCSV() {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = '.csv';
+  inp.onchange = e => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const data = parseCSV(ev.target.result);
+      const existing = fileList.findIndex(f => f.name === file.name);
+      if (existing >= 0) {
+        if (!confirm(`'${file.name}' 이 이미 있습니다. 덮어쓸까요?`)) return;
+        fileList[existing].data = data;
+      } else {
+        fileList.push({ name: file.name, data });
+      }
+      loadFile(fileList.findIndex(f => f.name === file.name));
+      renderFileList();
+    };
+    reader.readAsText(file, 'UTF-8');
+  };
+  inp.click();
+}
+
+function newCSVFromData() {
+  const name = prompt('파일 이름 (.csv 자동 추가):');
+  if (!name) return;
+  const fname = name.endsWith('.csv') ? name : name + '.csv';
+  if (fileList.find(f => f.name === fname)) { alert('같은 이름의 파일이 있습니다.'); return; }
+  fileList.push({ name: fname, data: [] });
+  loadFile(fileList.length - 1);
+  renderFileList();
+}
+
+function exportCSV() {
+  if (selectedFileIdx === null || !fileList[selectedFileIdx]) { alert('내보낼 파일을 선택하세요.'); return; }
+  const f    = fileList[selectedFileIdx];
+  const blob = new Blob(['\uFEFF' + toCSVString(f.data)], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a'); a.href = url; a.download = f.name; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function loadFile(idx) {
+  selectedFileIdx = idx;
+  const f = fileList[idx];
+  currentFileName = f.name;
+  sentenceData    = f.data;
+  memorizedSet    = new Set();
+  loadSRS();
+  buildPracticeIndices();
+  if (practiceIndices.length) loadSentence(); else clearPracticeArea();
+  refreshSentTable();
+  document.getElementById('sent-modal-fname').textContent = '— ' + f.name;
+  renderFileList();
+}
+
+function renderFileList() {
+  const ul = document.getElementById('file-list');
+  ul.innerHTML = '';
+  if (!fileList.length) { ul.innerHTML = '<li style="color:#aaa;font-size:13px;">불러온 파일 없음</li>'; return; }
+  fileList.forEach((f, i) => {
+    const li = document.createElement('li');
+    li.className = 'csv-file' + (i === selectedFileIdx ? ' selected' : '');
+    li.innerHTML = `<span>📄</span> ${f.name} <span style="color:#aaa;font-size:12px;">(${f.data.length}개)</span>`;
+    li.onclick = () => loadFile(i);
+    li.oncontextmenu = ev => { ev.preventDefault(); selectedFileIdx = i; renderFileList(); showFileCtx(ev, i); };
+    ul.appendChild(li);
+  });
+}
+
+// 우클릭 메뉴
+let ctxTargetIdx = null;
+function showFileCtx(e, idx) {
+  ctxTargetIdx = idx;
+  const ctx = document.getElementById('file-ctx');
+  ctx.style.display = 'block';
+  ctx.style.left = e.clientX + 'px';
+  ctx.style.top  = e.clientY + 'px';
+}
+document.addEventListener('click', () => { document.getElementById('file-ctx').style.display = 'none'; });
+function ctxNewCSV()  { newCSVFromData(); }
+function ctxRename() {
+  if (ctxTargetIdx === null) return;
+  const old  = fileList[ctxTargetIdx].name;
+  const name = prompt('새 이름:', old); if (!name || name === old) return;
+  const fname = name.endsWith('.csv') ? name : name + '.csv';
+  fileList[ctxTargetIdx].name = fname;
+  if (selectedFileIdx === ctxTargetIdx) { currentFileName = fname; document.getElementById('sent-modal-fname').textContent = '— ' + fname; }
+  renderFileList();
+}
+function ctxDelete() {
+  if (ctxTargetIdx === null) return;
+  if (!confirm(`'${fileList[ctxTargetIdx].name}' 을 삭제할까요?`)) return;
+  fileList.splice(ctxTargetIdx, 1);
+  if (selectedFileIdx === ctxTargetIdx) {
+    selectedFileIdx = null; currentFileName = null; sentenceData = []; practiceIndices = []; memorizedSet = new Set(); srsData = {};
+    clearPracticeArea(); refreshSentTable();
+    document.getElementById('sent-modal-fname').textContent = '';
+  } else if (selectedFileIdx > ctxTargetIdx) selectedFileIdx--;
+  ctxTargetIdx = null;
+  renderFileList();
+}
+
+// 드래그 앤 드롭
+const fileModalEl = document.getElementById('file-modal-inner');
+fileModalEl.addEventListener('dragover', e => { e.preventDefault(); fileModalEl.style.background = '#d5e8f5'; });
+fileModalEl.addEventListener('dragleave', () => { fileModalEl.style.background = ''; });
+fileModalEl.addEventListener('drop', e => {
+  e.preventDefault(); fileModalEl.style.background = '';
+  for (const file of e.dataTransfer.files) {
+    if (!file.name.endsWith('.csv')) continue;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const data = parseCSV(ev.target.result);
+      const ei   = fileList.findIndex(f => f.name === file.name);
+      if (ei >= 0) {
+        if (!confirm(`'${file.name}' 이 이미 있습니다. 덮어쓸까요?`)) return;
+        fileList[ei].data = data; loadFile(ei);
+      } else {
+        fileList.push({ name: file.name, data }); loadFile(fileList.length - 1);
+      }
+      renderFileList();
+    };
+    reader.readAsText(file, 'UTF-8');
+  }
+});
+
+// ═══════════════════════════════════════════════════
+// 문장 목록
+// ═══════════════════════════════════════════════════
+function openSentModal() {
+  if (!currentFileName) { alert('먼저 파일 관리에서 CSV 파일을 불러오세요.'); return; }
+  document.getElementById('sent-modal').classList.add('open');
+  refreshSentTable();
+}
+function closeSentModal() { document.getElementById('sent-modal').classList.remove('open'); hideInlineEdit(); }
+
+function refreshSentTable() {
+  const tbody = document.getElementById('sent-tbody');
+  tbody.innerHTML = '';
+  const query = document.getElementById('search-input').value.trim().toLowerCase();
+
+  // 미암기 섹션
+  addSectionHeader(tbody, '미암기 문장');
+  const active = sentenceData.map((_, i) => i).filter(i => !memorizedSet.has(i));
+  if (!active.length) addEmptyRow(tbody);
+  active.forEach(i => addSentRow(tbody, i, false, query));
+
+  // 암기 완료 섹션
+  addSectionHeader(tbody, '암기 완료');
+  const done = sentenceData.map((_, i) => i).filter(i => memorizedSet.has(i));
+  if (!done.length) addEmptyRow(tbody);
+  done.forEach(i => addSentRow(tbody, i, true, query));
+}
+
+function addSectionHeader(tbody, label) {
+  const tr = document.createElement('tr'); tr.className = 'section-hdr';
+  tr.innerHTML = `<td></td><td>  ${label}</td>`;
+  tbody.appendChild(tr);
+}
+function addEmptyRow(tbody) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td></td><td style="color:#aaa;">    (없음)</td>`;
+  tbody.appendChild(tr);
+}
+function addSentRow(tbody, i, isMem, query) {
+  const { text, desc } = sentenceData[i];
+  const short = desc && desc.length > 30 ? desc.slice(0,27) + '…' : desc;
+  const content = `  ${String(i+1).padStart(3)}.  ${text}${desc ? '   # ' + short : ''}`;
+  const isMatch = query && (text.toLowerCase().includes(query) || desc.toLowerCase().includes(query));
+  const tr = document.createElement('tr');
+  tr.className = (isMem ? 'memorized' : 'normal') + (isMatch ? ' search-match' : '');
+  tr.dataset.idx = i;
+  tr.innerHTML = `<td class="mem-check">${isMem ? '✅' : '☐'}</td><td>${escHtml(content)}</td>`;
+  // 암기 체크 클릭
+  tr.querySelector('.mem-check').onclick = e => { e.stopPropagation(); toggleMemorize(i); };
+  // 행 클릭 → 인라인 수정 + 연습 이동
+  tr.onclick = () => { showInlineEdit(i); jumpToPractice(i); };
+  tbody.appendChild(tr);
+}
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function applySearch() { refreshSentTable(); }
+
+function toggleMemorize(i) {
+  if (memorizedSet.has(i)) memorizedSet.delete(i); else memorizedSet.add(i);
+  buildPracticeIndices();
+  if (practiceIndices.length) { currentIndex = Math.min(currentIndex, practiceIndices.length - 1); loadSentence(); }
+  else clearPracticeArea();
+  refreshSentTable();
+}
+
+function jumpToPractice(dataIdx) {
+  const pos = practiceIndices.indexOf(dataIdx);
+  if (pos >= 0) { currentIndex = pos; loadSentence(); }
+}
+
+// 인라인 수정
+function showInlineEdit(i) {
+  inlineIdx = i;
+  const { text, desc, expl } = sentenceData[i];
+  document.getElementById('inline-txt').value  = text;
+  document.getElementById('inline-desc').value = desc;
+  document.getElementById('inline-expl').value = expl;
+  document.getElementById('inline-edit').style.display = 'block';
+  document.getElementById('inline-edit').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function hideInlineEdit() {
+  inlineIdx = null;
+  document.getElementById('inline-edit').style.display = 'none';
+}
+function saveInlineEdit() {
+  if (inlineIdx === null) return;
+  const text = document.getElementById('inline-txt').value.trim();
+  if (!text) { alert('문장을 입력하세요.'); return; }
+  sentenceData[inlineIdx] = { text, desc: document.getElementById('inline-desc').value.trim(), expl: document.getElementById('inline-expl').value.trim() };
+  syncFileData();
+  refreshSentTable();
+  loadSentence();
+}
+
+// 추가/삭제
+function openSentenceDlg(mode='add', idx=null) {
+  sdlgMode = mode; sdlgIdx = idx;
+  document.getElementById('sdlg-title').textContent = mode === 'add' ? '문장 추가' : '문장 수정';
+  if (mode === 'edit' && idx !== null) {
+    const { text, desc, expl } = sentenceData[idx];
+    document.getElementById('sdlg-txt').value  = text;
+    document.getElementById('sdlg-desc').value = desc;
+    document.getElementById('sdlg-expl').value = expl;
+  } else {
+    document.getElementById('sdlg-txt').value = '';
+    document.getElementById('sdlg-desc').value = '';
+    document.getElementById('sdlg-expl').value = '';
+  }
+  document.getElementById('sentence-dlg').classList.add('open');
+  setTimeout(() => document.getElementById('sdlg-txt').focus(), 100);
+}
+function closeSentenceDlg() { document.getElementById('sentence-dlg').classList.remove('open'); }
+function confirmSentenceDlg() {
+  const text = document.getElementById('sdlg-txt').value.trim();
+  if (!text) { alert('문장을 입력하세요.'); return; }
+  const row = { text, desc: document.getElementById('sdlg-desc').value.trim(), expl: document.getElementById('sdlg-expl').value.trim() };
+  if (sdlgMode === 'add') {
+    sentenceData.push(row);
+    buildPracticeIndices();
+    const ni = sentenceData.length - 1;
+    const pos = practiceIndices.indexOf(ni);
+    if (pos >= 0) currentIndex = pos;
+  } else {
+    sentenceData[sdlgIdx] = row;
+  }
+  syncFileData();
+  refreshSentTable();
+  loadSentence();
+  closeSentenceDlg();
+}
+document.getElementById('sentence-dlg').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.ctrlKey) confirmSentenceDlg();
+  if (e.key === 'Escape') closeSentenceDlg();
+});
+
+function deleteSelectedSentence() {
+  if (inlineIdx === null) { alert('삭제할 항목을 선택하세요.'); return; }
+  const preview = sentenceData[inlineIdx].text.slice(0,40);
+  if (!confirm(`삭제할까요?\n"${preview}"`)) return;
+  const i = inlineIdx;
+  sentenceData.splice(i, 1);
+  memorizedSet = new Set([...memorizedSet].map(m => m === i ? -1 : (m > i ? m - 1 : m)).filter(m => m >= 0));
+  syncFileData();
+  buildPracticeIndices();
+  currentIndex = Math.min(currentIndex, Math.max(practiceIndices.length - 1, 0));
+  if (practiceIndices.length) loadSentence(); else clearPracticeArea();
+  hideInlineEdit();
+  refreshSentTable();
+}
+
+function syncFileData() {
+  if (selectedFileIdx !== null && fileList[selectedFileIdx]) fileList[selectedFileIdx].data = sentenceData;
+}
+
+// ═══════════════════════════════════════════════════
+// 옵션
+// ═══════════════════════════════════════════════════
+function openOptionsModal()  { document.getElementById('options-dlg').classList.add('open'); }
+function closeOptionsModal() { document.getElementById('options-dlg').classList.remove('open'); }
+function changeFontSize(size) {
+  const px = size + 'px';
+  document.getElementById('target-display').style.fontSize = px;
+  document.getElementById('input-text').style.fontSize     = px;
+}
+
+// ═══════════════════════════════════════════════════
+// 모달 외부 클릭 닫기
+// ═══════════════════════════════════════════════════
+['sent-modal','file-modal','options-dlg','sentence-dlg'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => {
+    if (e.target.id === id) {
+      if (id === 'sent-modal') closeSentModal();
+      else if (id === 'file-modal') closeFileModal();
+      else if (id === 'options-dlg') closeOptionsModal();
+      else if (id === 'sentence-dlg') closeSentenceDlg();
+    }
+  });
+});
+
+// Esc 키로 모달 닫기
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('sent-modal').classList.contains('open'))    { closeSentModal(); return; }
+    if (document.getElementById('file-modal').classList.contains('open'))    { closeFileModal(); return; }
+    if (document.getElementById('options-dlg').classList.contains('open'))   { closeOptionsModal(); return; }
+    if (document.getElementById('sentence-dlg').classList.contains('open'))  { closeSentenceDlg(); return; }
+  }
+});
+</script>
+</body>
+</html>
