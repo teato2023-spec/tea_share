@@ -1,0 +1,101 @@
+text,description
+Press any key to continue.,계속하려면 아무 키나 누르세요. | 프로그램 실행 중 다음 단계로 넘어갈 때 표시
+Are you sure you want to delete this file?,이 파일을 삭제하시겠습니까? | 파일 삭제 전 확인 메시지
+Your password has been changed successfully.,비밀번호가 성공적으로 변경되었습니다. | 비밀번호 변경 완료 알림
+Access denied. You do not have permission to perform this action.,액세스가 거부되었습니다. 이 작업을 수행할 권한이 없습니다. | 권한 부족 시 표시되는 오류
+The file already exists. Do you want to replace it?,파일이 이미 존재합니다. 덮어쓰시겠습니까? | 파일 복사/이동 시 중복 확인
+An unexpected error has occurred. Please try again later.,예기치 않은 오류가 발생했습니다. 나중에 다시 시도하세요. | 일반 오류 메시지
+Your session has expired. Please log in again.,세션이 만료되었습니다. 다시 로그인하세요. | 로그인 세션 시간 초과
+No internet connection. Check your network settings.,인터넷 연결 없음. 네트워크 설정을 확인하세요. | 네트워크 연결 오류
+The application is not responding.,응용 프로그램이 응답하지 않습니다. | 프로그램이 멈췄을 때 표시
+Do you want to save changes before closing?,닫기 전에 변경 내용을 저장하시겠습니까? | 저장 안 된 내용이 있을 때 표시
+File not found.,파일을 찾을 수 없습니다. | 지정한 경로에 파일이 없을 때 표시
+Downloading updates... Please wait.,업데이트 다운로드 중... 잠시 기다려 주세요. | 업데이트 설치 중 표시
+Restart required to complete the installation.,설치를 완료하려면 재시작이 필요합니다. | 프로그램 설치 후 재시작 요청
+Low disk space. Free up some space to continue.,디스크 공간이 부족합니다. 계속하려면 공간을 확보하세요. | 저장 공간 부족 경고
+Copy and paste this link into your browser.,이 링크를 브라우저에 복사하여 붙여넣으세요. | 링크를 직접 입력해야 할 때 안내
+Your account has been locked due to too many failed attempts.,로그인 시도 횟수 초과로 계정이 잠겼습니다. | 보안상 계정 잠금 안내
+Enable two-factor authentication for added security.,보안 강화를 위해 2단계 인증을 활성화하세요. | 2단계 인증 권장 안내
+The update is ready to install.,업데이트 설치 준비가 완료되었습니다. | 업데이트 대기 상태 알림
+Drag and drop files here to upload.,파일을 여기에 끌어다 놓으면 업로드됩니다. | 파일 업로드 안내
+Click here to unsubscribe from this mailing list.,이 메일링 리스트에서 수신 취소하려면 여기를 클릭하세요. | 이메일 수신 취소 안내
+Your free trial has expired.,무료 체험 기간이 만료되었습니다. | 무료 버전 만료 알림
+Loading... Please wait.,로딩 중... 잠시 기다려 주세요. | 콘텐츠나 앱 불러오는 중 표시
+This website uses cookies to improve your experience.,이 웹사이트는 경험 향상을 위해 쿠키를 사용합니다. | 쿠키 사용 동의 안내
+Invalid username or password.,잘못된 사용자 이름 또는 비밀번호입니다. | 로그인 실패 시 표시
+Your cart is empty.,장바구니가 비어 있습니다. | 쇼핑몰 장바구니 비어있을 때 표시
+Page not found. The requested URL was not found on this server.,페이지를 찾을 수 없습니다. 요청한 URL이 서버에 없습니다. | 404 오류 메시지
+The server is temporarily unavailable. Please try again later.,서버를 일시적으로 사용할 수 없습니다. 나중에 다시 시도하세요. | 503 서버 오류
+Your subscription has been renewed successfully.,구독이 성공적으로 갱신되었습니다. | 구독 자동 갱신 완료 알림
+Are you sure you want to log out?,로그아웃하시겠습니까? | 로그아웃 전 확인 메시지
+Select all files in the current folder.,현재 폴더의 모든 파일을 선택합니다. | Ctrl+A 기능 설명
+The backup was completed successfully.,백업이 성공적으로 완료되었습니다. | 백업 완료 알림
+Connection timed out. Please check your internet connection.,연결 시간이 초과되었습니다. 인터넷 연결을 확인하세요. | 연결 타임아웃 오류
+Right-click to see more options.,추가 옵션을 보려면 마우스 오른쪽 버튼을 클릭하세요. | 컨텍스트 메뉴 안내
+This action cannot be undone.,이 작업은 취소할 수 없습니다. | 되돌릴 수 없는 작업 경고
+Scroll down to see more content.,아래로 스크롤하여 더 많은 내용을 확인하세요. | 스크롤 안내
+Your file has been saved.,파일이 저장되었습니다. | 저장 완료 알림
+Please enter a valid email address.,유효한 이메일 주소를 입력하세요. | 이메일 형식 오류
+The password must be at least 8 characters long.,비밀번호는 최소 8자 이상이어야 합니다. | 비밀번호 최소 길이 요구사항
+Caps Lock is on.,Caps Lock이 켜져 있습니다. | 대문자 잠금 활성화 안내
+You have unsaved changes.,저장되지 않은 변경 내용이 있습니다. | 미저장 변경사항 경고
+Search results for: python tutorial,검색어 'python tutorial'에 대한 검색 결과 | 검색 결과 페이지 제목
+An update is available for your software.,소프트웨어 업데이트가 있습니다. | 업데이트 알림
+Double-click to open the file.,파일을 열려면 두 번 클릭하세요. | 파일 열기 안내
+This feature is not available in your current plan.,이 기능은 현재 요금제에서 사용할 수 없습니다. | 유료 기능 안내
+Your download will begin shortly.,다운로드가 곧 시작됩니다. | 다운로드 시작 안내
+Upgrade to unlock premium features.,프리미엄 기능을 사용하려면 업그레이드하세요. | 유료 업그레이드 권유
+All rights reserved.,모든 권리 보유 | 저작권 표기 문구
+The file is too large to upload.,파일이 너무 커서 업로드할 수 없습니다. | 파일 크기 초과 오류
+Read the terms and conditions before proceeding.,진행하기 전에 이용약관을 읽어보세요. | 약관 확인 안내
+Enter your PIN to unlock the device.,기기 잠금을 해제하려면 PIN을 입력하세요. | PIN 잠금 해제 안내
+Your payment was declined.,결제가 거절되었습니다. | 결제 실패 안내
+The file has been moved to the Trash.,파일이 휴지통으로 이동되었습니다. | 삭제 → 휴지통 이동 알림
+Share this page with your friends.,이 페이지를 친구들과 공유하세요. | 공유 권유 문구
+Turn off airplane mode to connect to the internet.,인터넷에 연결하려면 비행기 모드를 끄세요. | 비행기 모드 비활성화 안내
+A critical error has been detected in your system.,시스템에 심각한 오류가 감지되었습니다. | 심각한 시스템 오류 경고
+The device driver is out of date.,장치 드라이버가 최신 버전이 아닙니다. | 드라이버 업데이트 필요 안내
+Please fill in all required fields.,모든 필수 항목을 입력하세요. | 필수 입력 항목 누락 경고
+Sign in with your Google account.,Google 계정으로 로그인하세요. | Google 소셜 로그인 안내
+Your battery is running low.,배터리가 부족합니다. | 배터리 부족 경고
+The connection is not private.,연결이 안전하지 않습니다. | HTTPS 인증서 오류 (브라우저)
+Enable notifications to stay up to date.,최신 정보를 받으려면 알림을 활성화하세요. | 알림 허용 권유
+Unknown error. Error code: 0x80070005,알 수 없는 오류. 오류 코드: 0x80070005 | Windows 권한 오류 코드
+Your subscription will expire in 3 days.,구독이 3일 후 만료됩니다. | 구독 만료 임박 알림
+New message from John: "Are you available now?","John에게 새 메시지: ""지금 통화 가능한가요?"" | 메시지 알림 예시"
+The system will shut down in 5 minutes.,5분 후 시스템이 종료됩니다. | 강제 종료 예고 알림
+Verify your identity to continue.,계속하려면 본인 확인을 하세요. | 본인 인증 요청
+Do not turn off your computer during the update.,업데이트 중에는 컴퓨터를 끄지 마세요. | 업데이트 중 전원 차단 금지 경고
+This page is taking too long to respond.,이 페이지가 응답하는 데 너무 오래 걸립니다. | 페이지 로드 지연 안내
+Sync complete. All files are up to date.,동기화 완료. 모든 파일이 최신 상태입니다. | 클라우드 동기화 완료 알림
+Your account information has been updated.,계정 정보가 업데이트되었습니다. | 계정 변경 완료 알림
+This app wants to access your camera.,이 앱이 카메라에 접근하려고 합니다. | 앱 권한 요청 안내
+The requested resource could not be found.,요청한 리소스를 찾을 수 없습니다. | HTTP 404 기술적 표현
+Preparing to install... Do not interrupt.,설치를 준비 중입니다... 중단하지 마세요. | 설치 준비 경고
+Format complete.,포맷이 완료되었습니다. | 디스크 포맷 완료 알림
+Your Wi-Fi password is incorrect.,Wi-Fi 비밀번호가 올바르지 않습니다. | Wi-Fi 인증 오류
+Close all open programs before installing.,설치 전에 열려 있는 모든 프로그램을 닫으세요. | 설치 전 준비 안내
+You are now connected to the internet.,인터넷에 연결되었습니다. | 인터넷 연결 성공 알림
+Virus detected. The file has been quarantined.,바이러스가 감지되었습니다. 파일이 격리되었습니다. | 백신 프로그램 바이러스 탐지 알림
+The printer is offline.,프린터가 오프라인 상태입니다. | 프린터 연결 오류
+Your microphone is muted.,마이크가 음소거 상태입니다. | 화상 회의 등에서 마이크 비활성화 안내
+This content is not available in your region.,이 콘텐츠는 해당 지역에서 이용할 수 없습니다. | 지역 제한 콘텐츠 안내
+Insufficient memory. Close some programs and try again.,메모리가 부족합니다. 일부 프로그램을 닫고 다시 시도하세요. | RAM 부족 오류
+This website is blocked by your administrator.,이 웹사이트는 관리자에 의해 차단되었습니다. | 네트워크 관리자 사이트 차단 안내
+Keyboard shortcut: Ctrl + Z to undo.,단축키: Ctrl + Z로 실행 취소. | 실행 취소 단축키 안내
+Your license key has expired.,라이선스 키가 만료되었습니다. | 소프트웨어 라이선스 만료 알림
+Check for updates automatically.,자동으로 업데이트를 확인합니다. | 자동 업데이트 설정 옵션
+The email address is already in use.,이 이메일 주소는 이미 사용 중입니다. | 회원가입 시 중복 이메일 오류
+Your screen resolution has been changed.,화면 해상도가 변경되었습니다. | 해상도 변경 알림
+Failed to connect to the server.,서버에 연결하지 못했습니다. | 서버 연결 실패 오류
+This is a read-only file.,이 파일은 읽기 전용입니다. | 수정 불가 파일 상태 안내
+Compressed file extracted successfully.,압축 파일이 성공적으로 해제되었습니다. | 압축 해제 완료 알림
+New software update is available: version 2.1.0.,새 소프트웨어 업데이트 사용 가능: 버전 2.1.0. | 버전 업데이트 알림
+The font you selected is not installed on this computer.,선택한 글꼴이 이 컴퓨터에 설치되어 있지 않습니다. | 폰트 미설치 안내
+Enable dark mode for a better viewing experience.,더 나은 시청 환경을 위해 다크 모드를 활성화하세요. | 다크 모드 권유
+The installation was successful.,설치가 성공적으로 완료되었습니다. | 프로그램 설치 완료 알림
+Your cloud storage is almost full.,클라우드 저장 공간이 거의 가득 찼습니다. | 클라우드 용량 부족 경고
+This app requires permission to access your location.,이 앱이 위치 정보에 접근하려면 권한이 필요합니다. | 위치 권한 요청 안내
+Please update your browser to view this page correctly.,이 페이지를 올바르게 보려면 브라우저를 업데이트하세요. | 브라우저 구버전 경고
+The clipboard is empty. Nothing to paste.,클립보드가 비어 있습니다. 붙여넣을 내용이 없습니다. | 붙여넣기 실패 시 표시
+Your changes have been discarded.,변경 내용이 취소되었습니다. | 편집 취소 완료 알림
