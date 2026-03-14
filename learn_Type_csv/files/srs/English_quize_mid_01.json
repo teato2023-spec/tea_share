@@ -215,5 +215,12 @@
     "next_review": "2026-03-15",
     "reps": 1,
     "last_rating": 2
+  },
+  "cause": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
   }
 }
