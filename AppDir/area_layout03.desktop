@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Area Layout
+Comment=캔버스 안에 도형을 배치하고 면적 비율을 균등 분배하는 프로그램
+Exec=area_layout03
+Icon=area_layout03
+Type=Application
+Categories=Utility;

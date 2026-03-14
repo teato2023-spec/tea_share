@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Paint Mixer
+Comment=CMY 기반 유화 물감 혼합 시스템
+Exec=paint_mixer
+Icon=paint_mixer
+Type=Application
+Categories=Graphics;

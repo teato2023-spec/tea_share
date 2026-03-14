@@ -42,9 +42,15 @@ map("n", "<leader>q", ":q<CR>", { desc = "종료" })
 
 -- Python 저장 후 실행 (F5) - 종료 시 창 자동 닫기
 map("n", "<F5>", function()
+  if vim.bo.buftype ~= "" then return end  -- 터미널·특수 버퍼에서는 무시
+  local file = vim.fn.expand("%")
+  if file == "" then
+    vim.notify("저장할 파일 이름이 없습니다.", vim.log.levels.WARN)
+    return
+  end
   vim.cmd("w")
   vim.cmd("split")
-  vim.cmd("terminal python3 " .. vim.fn.expand("%"))
+  vim.cmd("terminal python3 " .. file)
   vim.api.nvim_create_autocmd("TermClose", {
     buffer = vim.api.nvim_get_current_buf(),
     once = true,
@@ -63,3 +69,4 @@ require("keymaps.nvim-cmp")
 require("keymaps.telescope")
 require("keymaps.bufferline")
 require("keymaps.custom")
+require("keymaps.codecompanion")
