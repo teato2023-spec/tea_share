@@ -1,0 +1,883 @@
+{
+  ":cfirst": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 1
+  },
+  ":cn": {
+    "interval": 4,
+    "ease_factor": 2.65,
+    "next_review": "2026-03-18",
+    "reps": 1
+  },
+  ":source session.vim": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1
+  },
+  ":ls": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":bn": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":bp": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":bf": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":bl": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":b#": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":e 파일명": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":enew": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":badd 파일명": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":bd": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":bd!": {
+    "interval": 4,
+    "ease_factor": 2.65,
+    "next_review": "2026-03-18",
+    "reps": 1
+  },
+  ":%bd": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":split": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":vsplit": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  ":new": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":vnew": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>h": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>j": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>k": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>l": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>w": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>p": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>=": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>>": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w><": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>+": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>-": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":only": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 1
+  },
+  "<C-w>o": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>q": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>H": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>J": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>K": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>L": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>r": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "<C-w>x": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":tabnew": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":tabc": {
+    "interval": 1,
+    "ease_factor": 2.15,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  ":tabo": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":tabn": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":tabp": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "gt": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "gT": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "3gt": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  ":tabm 0": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "yy": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "p": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "P": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "\"ayy": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "\"ap": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "\"Ayy": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "\"+y": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "\"+p": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":reg": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  ":reg a": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "ma": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "mA": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "'a": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "`a": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "'.": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":marks": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":delmarks a": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":delmarks!": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "qa": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "q": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "@a": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "@@": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "10@a": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":5,10normal @a": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-o>": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-i>": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":jumps": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "gg": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "G": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "%": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "n": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "N": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "*": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "#": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "g": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "g,": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":changes": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":copen": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":cclose": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":cp": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":clast": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":lopen": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":lclose": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":ln": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":lp": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":set foldmethod=manual": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":set foldmethod=indent": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  ":set foldmethod=syntax": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zf": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zo": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zc": {
+    "interval": 1,
+    "ease_factor": 2.3,
+    "next_review": "2026-03-15",
+    "reps": 1
+  },
+  "za": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zO": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zC": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zR": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zM": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zj": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zk": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zd": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "zE": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":mksession session.vim": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":mksession! session.vim": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "u": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-r>": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "U": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":earlier 5m": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 2
+  },
+  ":earlier 10s": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":later 5m": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "g-": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "g+": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":undolist": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "v": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "V": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-v>": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "gv": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1
+  },
+  "diw": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "ciw": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "yiw": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "viw": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "di\"": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "ci(": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "da{": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "yit": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "dap": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "cis": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "q:": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  ":%s/old/new/g": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  ":%s/old/new/gc": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":5,10s/old/new/g": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":%s/old/new/gi": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":!ls": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":r !date": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  ":w !sudo tee %": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-w>": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-u>": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "<C-r>\"": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "<C-r><C-w>": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  }
+}

@@ -25,7 +25,60 @@ try:
 except ImportError:
     HAS_DND = False
 
-BASE_DIR = os.path.join(os.path.expanduser("~"), "문서", "Learn Type")
+_DEFAULT_BASE_DIR = os.path.join(os.path.expanduser("~"), "문서", "Learn Type")
+_SETTINGS_PATH   = os.path.join(os.path.expanduser("~"), ".config", "learn_type", "settings.json")
+
+# 단축키 액션 목록 (action_id, 표시 이름)
+_SHORTCUT_ACTIONS = [
+    ("prev",       "이전 문장"),
+    ("next",       "다음 문장"),
+    ("restart",    "다시시작"),
+    ("sent_list",  "문장 목록 열기"),
+    ("file_mgr",   "파일 관리 열기"),
+    ("options",    "옵션 열기"),
+    ("edit",       "현재 문장 편집"),
+    ("memorize",   "암기 완료"),
+    ("rate_0",     "평가: 다시"),
+    ("rate_1",     "평가: 어려움"),
+    ("rate_2",     "평가: 보통"),
+    ("rate_3",     "평가: 쉬움"),
+    ("mask_first", "첫글자만 보이기"),
+    ("mask_full",  "전체 가리기"),
+]
+
+_DEFAULT_SHORTCUTS: dict[str, str] = {k: "" for k, _ in _SHORTCUT_ACTIONS}
+
+
+def _event_to_bind(event) -> str:
+    """tkinter KeyPress 이벤트 → 바인딩 문자열.
+    숫자 등이 마우스 버튼 번호와 충돌하지 않도록 'Key-' 접두사 사용.
+    예) Ctrl+1 → '<Control-Key-1>'  /  F5 → '<Key-F5>'
+    """
+    mods = []
+    if event.state & 0x4: mods.append("Control")
+    if event.state & 0x1: mods.append("Shift")
+    if event.state & 0x8: mods.append("Alt")
+    if mods:
+        return "<" + "-".join(mods) + "-Key-" + event.keysym + ">"
+    return "<Key-" + event.keysym + ">"
+
+
+def _bind_to_display(bind_str: str) -> str:
+    """바인딩 문자열 → 표시용 문자열.
+    예) '<Control-Key-1>' → 'Ctrl+1'  /  '<Key-F5>' → 'F5'
+    """
+    if not bind_str:
+        return ""
+    s = bind_str.strip("<>")
+    parts = s.split("-")
+    disp = []
+    for p in parts:
+        if p == "Control": disp.append("Ctrl")
+        elif p == "Shift":  disp.append("Shift")
+        elif p == "Alt":    disp.append("Alt")
+        elif p == "Key":    continue       # 'Key' 토큰은 표시에서 제외
+        else:               disp.append(p.upper() if len(p) == 1 else p)
+    return "+".join(disp)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -38,7 +91,12 @@ class TypingPractice:
         self.root.geometry("1850x930")
         self.root.configure(bg="#f0f2f5")
 
-        os.makedirs(BASE_DIR, exist_ok=True)
+        _s = self._load_settings()
+        self.base_dir = _s.get("base_dir", _DEFAULT_BASE_DIR)
+        self.srs_custom_paths: dict = _s.get("srs_custom_paths", {})
+        self.shortcuts: dict = {**_DEFAULT_SHORTCUTS, **_s.get("shortcuts", {})}
+        self._bound_shortcuts: list[str] = []
+        os.makedirs(self.base_dir, exist_ok=True)
 
         # ── 상태 변수 ──────────────────────────────────────────────────────
         self.current_csv: str | None = None
@@ -72,6 +130,7 @@ class TypingPractice:
         self._create_tree_window()       # 파일 관리 팝업 미리 생성 (숨김 상태)
         self._setup_target_tags()
         self.load_tree()
+        self._apply_shortcuts()
 
     # ── 현재 항목 헬퍼 ───────────────────────────────────────────────────────
 
@@ -109,6 +168,168 @@ class TypingPractice:
         ]:
             fn.configure(size=size)
 
+    # ── 설정 로드/저장 ────────────────────────────────────────────────────────
+
+    def _load_settings(self) -> dict:
+        try:
+            with open(_SETTINGS_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+
+    def _save_settings(self):
+        os.makedirs(os.path.dirname(_SETTINGS_PATH), exist_ok=True)
+        try:
+            with open(_SETTINGS_PATH, "w", encoding="utf-8") as f:
+                json.dump({
+                    "base_dir": self.base_dir,
+                    "srs_custom_paths": self.srs_custom_paths,
+                    "shortcuts": self.shortcuts,
+                }, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+
+    # ── 단축키 시스템 ─────────────────────────────────────────────────────────
+
+    def _shortcut_fn(self, action_id: str):
+        return {
+            "prev":       self.prev_sentence,
+            "next":       self.next_sentence,
+            "restart":    self.restart_all,
+            "sent_list":  self._open_sentence_window,
+            "file_mgr":   self._open_tree_window,
+            "options":    self._open_options_window,
+            "edit":       self._edit_current_sentence,
+            "memorize":   self.memorize_current,
+            "rate_0":     lambda: self._rate_and_next(0),
+            "rate_1":     lambda: self._rate_and_next(1),
+            "rate_2":     lambda: self._rate_and_next(2),
+            "rate_3":     lambda: self._rate_and_next(3),
+            "mask_first": lambda: self._toggle_mask("first"),
+            "mask_full":  lambda: self._toggle_mask("full"),
+        }.get(action_id)
+
+    def _apply_shortcuts(self):
+        """shortcuts 딕셔너리를 root에 바인딩."""
+        for b in self._bound_shortcuts:
+            try: self.root.unbind(b)
+            except Exception: pass
+        self._bound_shortcuts = []
+        for action_id, bind_str in self.shortcuts.items():
+            if not bind_str:
+                continue
+            fn = self._shortcut_fn(action_id)
+            if fn:
+                try:
+                    self.root.bind(bind_str, lambda e, f=fn: f())
+                    self._bound_shortcuts.append(bind_str)
+                except Exception:
+                    pass
+
+    def _open_shortcuts_window(self):
+        win = tk.Toplevel(self.root)
+        win.title("단축키 설정")
+        win.resizable(False, False)
+        win.configure(bg="#f0f2f5")
+        win.transient(self.root)
+        win.grab_set()
+
+        tk.Label(win, text="  단축키 설정", bg="#2c3e50", fg="white",
+                 font=self.fn_bold, pady=8, anchor="w").pack(fill=tk.X)
+
+        body = tk.Frame(win, bg="#f0f2f5", padx=16, pady=12)
+        body.pack(fill=tk.BOTH)
+
+        # 헤더
+        tk.Label(body, text="기능",   bg="#dfe6e9", font=self.fn_bold,
+                 width=18, anchor="w", padx=6, pady=4, relief=tk.FLAT).grid(
+            row=0, column=0, sticky="ew", padx=(0, 2), pady=(0, 4))
+        tk.Label(body, text="단축키", bg="#dfe6e9", font=self.fn_bold,
+                 width=14, anchor="w", padx=6, pady=4, relief=tk.FLAT).grid(
+            row=0, column=1, sticky="ew", padx=(0, 2), pady=(0, 4))
+
+        key_labels: dict[str, tk.Label] = {}
+
+        def capture(action_id: str, lbl: tk.Label):
+            dlg = tk.Toplevel(win)
+            dlg.title("키 입력")
+            dlg.configure(bg="#f0f2f5")
+            dlg.transient(win)
+            dlg.grab_set()
+            dlg.resizable(False, False)
+
+            tk.Label(dlg, text="원하는 키 조합을 누르세요",
+                     bg="#f0f2f5", font=self.fn_bold, pady=12, padx=24).pack()
+            cur = self.shortcuts.get(action_id, "")
+            disp_var = tk.StringVar(value=_bind_to_display(cur) or "(없음)")
+            captured = [cur]
+
+            key_lbl = tk.Label(dlg, textvariable=disp_var,
+                               bg="#ecf0f1", font=self.fn_mono,
+                               padx=20, pady=10, relief=tk.GROOVE, width=20)
+            key_lbl.pack(padx=20, pady=(0, 14))
+
+            _SKIP = {"Shift_L", "Shift_R", "Control_L", "Control_R",
+                     "Alt_L", "Alt_R", "Super_L", "Super_R"}
+
+            def on_key(event):
+                if event.keysym in _SKIP:
+                    return
+                b = _event_to_bind(event)
+                captured[0] = b
+                disp_var.set(_bind_to_display(b))
+            dlg.bind("<KeyPress>", on_key)
+            dlg.focus_set()
+
+            def confirm():
+                self.shortcuts[action_id] = captured[0]
+                lbl.config(text=_bind_to_display(captured[0]) or "(없음)")
+                dlg.destroy()
+
+            def clear():
+                captured[0] = ""
+                disp_var.set("(없음)")
+
+            bf = tk.Frame(dlg, bg="#f0f2f5")
+            bf.pack(pady=(0, 14))
+            _b = dict(font=self.fn_sm, relief=tk.FLAT, padx=10, pady=3, cursor="hand2")
+            tk.Button(bf, text="확인",   command=confirm, bg="#27ae60", fg="white", **_b).pack(side=tk.LEFT, padx=3)
+            tk.Button(bf, text="초기화", command=clear,   bg="#e67e22", fg="white", **_b).pack(side=tk.LEFT, padx=3)
+            tk.Button(bf, text="취소",   command=dlg.destroy, bg="#bdc3c7", **_b).pack(side=tk.LEFT, padx=3)
+
+        for row, (action_id, label) in enumerate(_SHORTCUT_ACTIONS, start=1):
+            tk.Label(body, text=label, bg="#f0f2f5", font=self.fn_sm,
+                     anchor="w", padx=6).grid(row=row, column=0, sticky="ew", pady=2)
+
+            cur = self.shortcuts.get(action_id, "")
+            key_lbl = tk.Label(body, text=_bind_to_display(cur) or "(없음)",
+                               bg="#ecf0f1", font=self.fn_sm, anchor="w",
+                               padx=8, pady=2, relief=tk.FLAT, width=14)
+            key_lbl.grid(row=row, column=1, sticky="ew", padx=(2, 4), pady=2)
+            key_labels[action_id] = key_lbl
+
+            tk.Button(body, text="변경",
+                      command=lambda aid=action_id, lbl=key_lbl: capture(aid, lbl),
+                      font=self.fn_sm, relief=tk.FLAT, padx=8, pady=1,
+                      bg="#3498db", fg="white", cursor="hand2").grid(
+                row=row, column=2, padx=(0, 0), pady=2)
+
+        def reset_all():
+            for action_id in self.shortcuts:
+                self.shortcuts[action_id] = ""
+                if action_id in key_labels:
+                    key_labels[action_id].config(text="(없음)")
+
+        bf = tk.Frame(win, bg="#f0f2f5", pady=10)
+        bf.pack()
+        _b = dict(font=self.fn_sm, relief=tk.FLAT, padx=12, pady=3, cursor="hand2")
+        tk.Button(bf, text="저장",       command=lambda: (self._apply_shortcuts(), self._save_settings(), win.destroy()),
+                  bg="#27ae60", fg="white", **_b).pack(side=tk.LEFT, padx=4)
+        tk.Button(bf, text="전체 초기화", command=reset_all,
+                  bg="#e67e22", fg="white", **_b).pack(side=tk.LEFT, padx=4)
+        tk.Button(bf, text="취소",       command=win.destroy,
+                  bg="#bdc3c7", **_b).pack(side=tk.LEFT, padx=4)
+
     def _open_options_window(self):
         win = tk.Toplevel(self.root)
         win.title("옵션")
@@ -120,18 +341,157 @@ class TypingPractice:
         body = tk.Frame(win, bg="#f0f2f5", padx=20, pady=16)
         body.pack(fill=tk.BOTH)
 
-        tk.Label(body, text="글자 크기", bg="#f0f2f5", font=self.fn_bold).grid(row=0, column=0, sticky="w", pady=(0, 6))
+        # 글자 크기
+        tk.Label(body, text="글자 크기", bg="#f0f2f5", font=self.fn_bold).grid(
+            row=0, column=0, sticky="w", pady=(0, 6))
         size_var = tk.StringVar(value=str(self._font_size))
         om = tk.OptionMenu(body, size_var, "14", "16", "18", "20", "22", "24", "26", "28", "32",
                            command=self._change_font_size)
         om.config(font=self.fn_sm, bg="#ecf0f1", relief=tk.FLAT)
-        om.grid(row=0, column=1, padx=(10, 0), pady=(0, 6))
+        om.grid(row=0, column=1, columnspan=2, padx=(10, 0), pady=(0, 6), sticky="w")
+
+        # 기본 폴더 경로
+        tk.Label(body, text="기본 폴더", bg="#f0f2f5", font=self.fn_bold).grid(
+            row=1, column=0, sticky="w", pady=(10, 4))
+        dir_lbl = tk.Label(body, text=self.base_dir, bg="#ecf0f1", font=self.fn_sm,
+                           anchor="w", padx=6, pady=4, relief=tk.FLAT, wraplength=500)
+        dir_lbl.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(0, 4))
+
+        def change_dir():
+            new_dir = filedialog.askdirectory(
+                title="기본 폴더 선택", initialdir=self.base_dir, parent=win)
+            if not new_dir:
+                return
+            self.base_dir = new_dir
+            os.makedirs(self.base_dir, exist_ok=True)
+            self._save_settings()
+            dir_lbl.config(text=self.base_dir)
+            self.load_tree()
+
+        tk.Button(body, text="폴더 변경", command=change_dir,
+                  font=self.fn_sm, relief=tk.FLAT, padx=10, pady=3,
+                  cursor="hand2", bg="#3498db", fg="white").grid(
+            row=3, column=0, columnspan=2, sticky="w", pady=(0, 10))
+
+        # ── SRS 파일 관리 ─────────────────────────────────────────────────────
+        ttk.Separator(body, orient="horizontal").grid(
+            row=4, column=0, columnspan=3, sticky="ew", pady=(0, 10))
+
+        tk.Label(body, text="SRS 파일 관리", bg="#f0f2f5", font=self.fn_bold).grid(
+            row=5, column=0, sticky="w", pady=(0, 4))
+
+        def _srs_display():
+            if not self.current_csv:
+                return "(CSV 파일 미선택)"
+            p = self._srs_path()
+            return p if p else "(없음)"
+
+        srs_lbl = tk.Label(body, text=_srs_display(), bg="#ecf0f1", font=self.fn_sm,
+                           anchor="w", padx=6, pady=4, relief=tk.FLAT, wraplength=500)
+        srs_lbl.grid(row=6, column=0, columnspan=3, sticky="ew", pady=(0, 6))
+
+        def _refresh_srs_lbl():
+            srs_lbl.config(text=_srs_display())
+            self._load_srs()
+            self._refresh_sent_tree()
+
+        def new_srs():
+            if not self.current_csv:
+                messagebox.showwarning("알림", "먼저 CSV 파일을 선택하세요.", parent=win)
+                return
+            dlg = tk.Toplevel(win)
+            dlg.title("새 SRS 파일 만들기")
+            dlg.configure(bg="#f0f2f5")
+            dlg.transient(win)
+            dlg.grab_set()
+            tk.Label(dlg, text="파일 이름 (확장자 제외):", bg="#f0f2f5", font=self.fn_sm).pack(padx=16, pady=(14, 4))
+            name_var = tk.StringVar()
+            ent = tk.Entry(dlg, textvariable=name_var, font=self.fn_sm, width=30)
+            ent.pack(padx=16, pady=(0, 8))
+            # 기본값: CSV 파일명과 동일
+            name_var.set(os.path.splitext(os.path.basename(self.current_csv))[0])
+            ent.select_range(0, tk.END)
+            ent.focus_set()
+
+            def do_create():
+                n = name_var.get().strip()
+                if not n:
+                    return
+                dest_dir = filedialog.askdirectory(
+                    title="SRS 파일 저장 위치 선택",
+                    initialdir=os.path.dirname(self.current_csv),
+                    parent=dlg)
+                if not dest_dir:
+                    return
+                path = os.path.join(dest_dir, n + ".json")
+                if os.path.exists(path):
+                    if not messagebox.askyesno("덮어쓰기", f"이미 존재합니다:\n{path}\n\n연결만 하시겠습니까?", parent=dlg):
+                        return
+                else:
+                    with open(path, "w", encoding="utf-8") as f:
+                        json.dump({}, f)
+                self.srs_custom_paths[self.current_csv] = path
+                self._save_settings()
+                dlg.destroy()
+                _refresh_srs_lbl()
+
+            btn_row = tk.Frame(dlg, bg="#f0f2f5")
+            btn_row.pack(pady=(0, 14))
+            tk.Button(btn_row, text="만들기", command=do_create,
+                      font=self.fn_sm, relief=tk.FLAT, padx=10, pady=3,
+                      bg="#27ae60", fg="white", cursor="hand2").pack(side=tk.LEFT, padx=4)
+            tk.Button(btn_row, text="취소", command=dlg.destroy,
+                      font=self.fn_sm, relief=tk.FLAT, padx=10, pady=3,
+                      bg="#bdc3c7", cursor="hand2").pack(side=tk.LEFT, padx=4)
+
+        def select_srs():
+            if not self.current_csv:
+                messagebox.showwarning("알림", "먼저 CSV 파일을 선택하세요.", parent=win)
+                return
+            init = os.path.dirname(self.current_csv)
+            path = filedialog.askopenfilename(
+                title="SRS JSON 파일 선택",
+                initialdir=init,
+                filetypes=[("JSON 파일", "*.json"), ("모든 파일", "*.*")],
+                parent=win)
+            if not path:
+                return
+            self.srs_custom_paths[self.current_csv] = path
+            self._save_settings()
+            _refresh_srs_lbl()
+
+        def reset_srs():
+            if not self.current_csv:
+                return
+            self.srs_custom_paths.pop(self.current_csv, None)
+            self._save_settings()
+            _refresh_srs_lbl()
+
+        btn_srs = tk.Frame(body, bg="#f0f2f5")
+        btn_srs.grid(row=7, column=0, columnspan=3, sticky="w", pady=(0, 10))
+        tk.Button(btn_srs, text="새로 만들기", command=new_srs,
+                  font=self.fn_sm, relief=tk.FLAT, padx=10, pady=3,
+                  bg="#27ae60", fg="white", cursor="hand2").pack(side=tk.LEFT, padx=(0, 6))
+        tk.Button(btn_srs, text="파일 선택", command=select_srs,
+                  font=self.fn_sm, relief=tk.FLAT, padx=10, pady=3,
+                  bg="#3498db", fg="white", cursor="hand2").pack(side=tk.LEFT, padx=(0, 6))
+        tk.Button(btn_srs, text="기본값으로", command=reset_srs,
+                  font=self.fn_sm, relief=tk.FLAT, padx=10, pady=3,
+                  bg="#e67e22", fg="white", cursor="hand2").pack(side=tk.LEFT)
+
+        ttk.Separator(body, orient="horizontal").grid(
+            row=8, column=0, columnspan=3, sticky="ew", pady=(4, 10))
+
+        tk.Button(body, text="단축키 설정...", command=self._open_shortcuts_window,
+                  font=self.fn_sm, relief=tk.FLAT, padx=10, pady=3,
+                  bg="#8e44ad", fg="white", cursor="hand2").grid(
+            row=9, column=0, columnspan=3, sticky="w", pady=(0, 6))
 
         tk.Button(
             body, text="닫기", command=win.destroy,
             font=self.fn_sm, relief=tk.FLAT, padx=12, pady=3,
             cursor="hand2", bg="#bdc3c7"
-        ).grid(row=1, column=0, columnspan=2, pady=(10, 0))
+        ).grid(row=10, column=0, columnspan=3, pady=(0, 0))
 
     # ── UI 구성 ───────────────────────────────────────────────────────────────
 
@@ -183,6 +543,11 @@ class TypingPractice:
             bg="#f0f2f5", padx=10, pady=8
         )
         self._target_frame.pack(fill=tk.X, padx=12, pady=(8, 2))
+        self._practice_file_lbl = tk.Label(
+            self._target_frame, text="", bg="#f0f2f5",
+            fg="#888", font=self.fn_sm, anchor="e"
+        )
+        self._practice_file_lbl.pack(fill=tk.X, pady=(0, 2))
 
         self.target_display = tk.Text(
             self._target_frame, height=2, font=self.fn_mono,
@@ -379,13 +744,15 @@ class TypingPractice:
 
         self.sent_tree = ttk.Treeview(
             tv_wrap, style="Sent.Treeview",
-            columns=("check", "content"), show="headings",
+            columns=("check", "content", "srs"), show="headings",
             selectmode="browse"
         )
         self.sent_tree.heading("check",   text="암기")
         self.sent_tree.heading("content", text="문장")
+        self.sent_tree.heading("srs",     text="난이도")
         self.sent_tree.column("check",   width=55,  minwidth=55,  stretch=False, anchor="center")
-        self.sent_tree.column("content", width=580, minwidth=200, stretch=True)
+        self.sent_tree.column("content", width=520, minwidth=200, stretch=True)
+        self.sent_tree.column("srs",     width=90,  minwidth=90,  stretch=False, anchor="center")
 
         self.sent_tree.tag_configure("normal",       foreground="#2c3e50")
         self.sent_tree.tag_configure("memorized",    foreground="#27ae60")
@@ -508,8 +875,9 @@ class TypingPractice:
 
         style = ttk.Style()
         style.configure("Treeview", font=self.fn_sm, rowheight=38)
-        self.tree.tag_configure("folder", foreground="#e67e22")
-        self.tree.tag_configure("csv",    foreground="#2980b9")
+        self.tree.tag_configure("folder",    foreground="#e67e22")
+        self.tree.tag_configure("csv",       foreground="#2980b9")
+        self.tree.tag_configure("csv_srs",   foreground="#27ae60")
         self.tree.tag_configure("drag_over", background="#d5e8f5")
 
         self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
@@ -612,15 +980,34 @@ class TypingPractice:
             )
 
     def _setup_target_tags(self):
-        # 다크 배경 기준 색상
+        # ── 기본 모드 태그 ────────────────────────────────────────────────────
         self.target_display.tag_configure(
             "correct",    foreground="#2ecc71", font=self.fn_mono)
         self.target_display.tag_configure(
             "wrong",      foreground="#e74c3c", font=self.fn_mono_s)
         self.target_display.tag_configure(
-            "cursor_pos", background="#2980b9", foreground="#ffffff", font=self.fn_mono)
+            "cursor_pos", background="#e67e22", foreground="#ffffff", font=self.fn_mono)
         self.target_display.tag_configure(
-            "pending",    foreground="#bdc3c7", font=self.fn_mono)
+            "pending",    foreground="#7f8c8d", font=self.fn_mono)
+
+        # ── 입력창 오타 태그 ──────────────────────────────────────────────────
+        self.input_text.tag_configure(
+            "input_wrong", foreground="#e74c3c",
+            underline=True, font=self.fn_mono)
+
+        # ── 가리기/복습 마스크 전용 태그 ──────────────────────────────────────
+        # mask_pending : 아직 입력 안 된 블록 (파란 블록)
+        self.target_display.tag_configure(
+            "mask_pending", foreground="#2e4a6e", background="#2e4a6e", font=self.fn_mono)
+        # mask_wrong   : 오타 위치 (빨간 블록)
+        self.target_display.tag_configure(
+            "mask_wrong",   foreground="#922b21", background="#922b21", font=self.fn_mono)
+        # mask_cursor  : 현재 커서 위치 (밝은 주황 하이라이트)
+        self.target_display.tag_configure(
+            "mask_cursor",  foreground="#ffffff", background="#e67e22", font=self.fn_mono)
+        # mask_hint    : 첫글자만 보이기 — 힌트 글자 (밝은 회색)
+        self.target_display.tag_configure(
+            "mask_hint",    foreground="#aab7c4", font=self.fn_mono)
 
     # ── 텍스트 위젯 자동 높이 조절 ───────────────────────────────────────────
 
@@ -642,7 +1029,7 @@ class TypingPractice:
 
     def load_tree(self):
         self.tree.delete(*self.tree.get_children())
-        self._insert_dir(BASE_DIR, "")
+        self._insert_dir(self.base_dir, "")
 
     def _insert_dir(self, path: str, parent: str):
         try:
@@ -655,6 +1042,9 @@ class TypingPractice:
         for name in entries:
             full = os.path.join(path, name)
             if os.path.isdir(full):
+                # srs/ 폴더(이전 .srs/ 포함)는 트리에서 숨김
+                if name in ("srs", ".srs"):
+                    continue
                 node = self.tree.insert(
                     parent, tk.END,
                     text=f"[폴더] {name}", values=[full],
@@ -662,10 +1052,11 @@ class TypingPractice:
                 )
                 self._insert_dir(full, node)
             elif name.lower().endswith(".csv"):
+                indicator = "● " if self._has_srs(full) else ""
                 self.tree.insert(
                     parent, tk.END,
-                    text=f"{name}", values=[full],
-                    tags=("csv",)
+                    text=f"{indicator}{name}", values=[full],
+                    tags=("csv_srs" if indicator else "csv",)
                 )
 
     def _get_selected_path(self) -> str | None:
@@ -675,7 +1066,7 @@ class TypingPractice:
     def _get_target_dir(self) -> str:
         p = self._get_selected_path()
         if p is None:
-            return BASE_DIR
+            return self.base_dir
         return p if os.path.isdir(p) else os.path.dirname(p)
 
     def _on_tree_select(self, _e):
@@ -881,9 +1272,9 @@ class TypingPractice:
         """
         drives = self._detect_usb_drives()
         if not drives:
-            return os.path.expanduser("~")
+            return self.base_dir
 
-        chosen   = [os.path.expanduser("~")]
+        chosen   = [self.base_dir]
         cancelled = [False]
 
         dlg = tk.Toplevel(self.root)
@@ -931,10 +1322,10 @@ class TypingPractice:
 
         ttk.Separator(body, orient="horizontal").pack(fill=tk.X, pady=8)
 
-        # 홈 디렉토리 선택
+        # 기본 폴더 선택
         tk.Radiobutton(
             body,
-            text=f"홈 디렉토리  ({os.path.expanduser('~')})",
+            text=f"기본 폴더  ({self.base_dir})",
             variable=var, value="__home__",
             bg="#f0f2f5", fg="#2c3e50", font=fn,
             activebackground="#f0f2f5", anchor="w"
@@ -953,7 +1344,7 @@ class TypingPractice:
 
         def ok(_e=None):
             v = var.get()
-            chosen[0] = os.path.expanduser("~") if v == "__home__" else v
+            chosen[0] = self.base_dir if v == "__home__" else v
             dlg.destroy()
 
         def cancel(_e=None):
@@ -1051,6 +1442,7 @@ class TypingPractice:
             fname = os.path.basename(path)
             self._csv_lbl.config(text=fname, fg="#2c3e50")
             self._sent_win.title(f"문장 목록 — {fname}")
+            self._practice_file_lbl.config(text=fname)
             self._refresh_sent_tree()
             self._build_practice_indices()
             self.reset_current()
@@ -1116,12 +1508,23 @@ class TypingPractice:
     # 문장 목록 CRUD
     # ══════════════════════════════════════════════════════════════════════════
 
+    def _srs_label(self, text: str) -> str:
+        """문장의 마지막 평가를 난이도 레이블로 반환."""
+        entry = self.srs_data.get(text)
+        if not entry or entry.get("reps", 0) == 0:
+            return ""
+        r = entry.get("last_rating", -1)
+        if r == 3:  return "쉬움"
+        if r == 2:  return "보통"
+        if r <= 1:  return "어려움"
+        return ""
+
     def _refresh_sent_tree(self):
         self.sent_tree.delete(*self.sent_tree.get_children())
 
         # ── 미암기 섹션 ──────────────────────────────────────────────────────
         self.sent_tree.insert("", tk.END, iid="hdr_active",
-                              values=("", "  미암기 문장"), tags=("hdr",))
+                              values=("", "  미암기 문장", ""), tags=("hdr",))
         active = [i for i in range(len(self.sentence_data))
                   if i not in self.memorized_indices]
         for i in active:
@@ -1131,14 +1534,15 @@ class TypingPractice:
                 short = desc if len(desc) <= 30 else desc[:27] + "…"
                 content += f"   # {short}"
             self.sent_tree.insert("", tk.END, iid=f"r_{i}",
-                                  values=("[ ]", content), tags=("normal",))
+                                  values=("[ ]", content, self._srs_label(text)),
+                                  tags=("normal",))
         if not active:
             self.sent_tree.insert("", tk.END, iid="empty_active",
-                                  values=("", "    (없음)"), tags=("empty",))
+                                  values=("", "    (없음)", ""), tags=("empty",))
 
         # ── 암기 완료 섹션 ───────────────────────────────────────────────────
         self.sent_tree.insert("", tk.END, iid="hdr_done",
-                              values=("", "  암기 완료"), tags=("hdr",))
+                              values=("", "  암기 완료", ""), tags=("hdr",))
         done = [i for i in range(len(self.sentence_data))
                 if i in self.memorized_indices]
         for i in done:
@@ -1148,10 +1552,11 @@ class TypingPractice:
                 short = desc if len(desc) <= 30 else desc[:27] + "…"
                 content += f"   # {short}"
             self.sent_tree.insert("", tk.END, iid=f"r_{i}",
-                                  values=("[v]", content), tags=("memorized",))
+                                  values=("[v]", content, self._srs_label(text)),
+                                  tags=("memorized",))
         if not done:
             self.sent_tree.insert("", tk.END, iid="empty_done",
-                                  values=("", "    (없음)"), tags=("empty",))
+                                  values=("", "    (없음)", ""), tags=("empty",))
 
         # 검색 하이라이트 재적용
         self._apply_search()
@@ -1230,7 +1635,9 @@ class TypingPractice:
             messagebox.showwarning("경고", "문장을 입력하세요.", parent=self._sent_win)
             return
         idx = self._inline_idx
+        old_text = self.sentence_data[idx][0]
         self.sentence_data[idx] = (text, desc, expl)
+        self._transfer_srs(old_text, text)
         self._save_csv()
         self._refresh_sent_tree()
         self.reset_current()
@@ -1269,7 +1676,9 @@ class TypingPractice:
         text = row[0]; desc = row[1] if len(row) > 1 else ""; expl = row[2] if len(row) > 2 else ""
         dlg = SentenceDialog(self.root, "문장 / 명령어 수정", text, desc, expl, font_size=self._font_size)
         if dlg.result:
+            old_text = self.sentence_data[idx][0]
             self.sentence_data[idx] = dlg.result
+            self._transfer_srs(old_text, dlg.result[0])
             self._save_csv()
             self._refresh_sent_tree()
             self.reset_current()
@@ -1342,6 +1751,15 @@ class TypingPractice:
         if self.practice_indices:
             self.reset_current()
 
+    def _refresh_input_highlight(self, typed: str):
+        """입력창에서 오타 위치를 빨간 밑줄로 표시."""
+        target = self._cur_text()
+        self.input_text.tag_remove("input_wrong", "1.0", tk.END)
+        for i, ch in enumerate(typed):
+            if i >= len(target) or ch != target[i]:
+                pos = f"1.{i}"
+                self.input_text.tag_add("input_wrong", pos, f"{pos}+1c")
+
     def reset_current(self):
         self.input_text.delete("1.0", tk.END)
         self.input_text.configure(height=2)   # 입력란 높이 초기화
@@ -1349,14 +1767,13 @@ class TypingPractice:
         self.is_typing       = False
         self.completed       = False
         self._hidden_revealed = False
-        self._mask_style = "block"
         self._update_mask_buttons()
         self._hide_banner()
         self._stats_lbl.config(text="타수: —  |  시간: —")
         self._update_counter()
         self._refresh_target("")   # target_display 도 내부에서 _auto_resize 호출
-        # 가리기 모드: 다음 문장에도 설명을 계속 표시
-        if self.typing_mode.get() == "가리기":
+        # 가리기/복습 모드: 다음 문장에도 설명을 계속 표시
+        if self.typing_mode.get() in ("가리기", "복습"):
             self._update_desc_display()
         else:
             self._hide_desc()
@@ -1370,6 +1787,7 @@ class TypingPractice:
         self.srs_data         = {}
         self._csv_lbl.config(text="파일 관리에서 CSV를 선택하세요", fg="#555")
         self._sent_win.title("문장 목록")
+        self._practice_file_lbl.config(text="")
         self._refresh_sent_tree()
         self._clear_practice_area()
 
@@ -1443,7 +1861,7 @@ class TypingPractice:
         # 마스크 스타일 초기화 및 바 표시/숨김
         self._mask_style = "block"
         self._update_mask_buttons()
-        if self.typing_mode.get() == "가리기":
+        if self.typing_mode.get() in ("가리기", "복습"):
             self._mask_bar.pack(fill=tk.X, before=self._middle)
         else:
             self._mask_bar.pack_forget()
@@ -1472,43 +1890,58 @@ class TypingPractice:
         self.target_display.config(state=tk.NORMAL)
         self.target_display.delete("1.0", tk.END)
 
-        if mode == "가리기":
+        if mode in ("가리기", "복습"):
             def _is_word_start(text: str, i: int) -> bool:
-                return i == 0 and text[i] != " " or (i > 0 and text[i - 1] == " " and text[i] != " ")
+                return (i == 0 and text[i] != " ") or (i > 0 and text[i - 1] == " " and text[i] != " ")
 
             mask = self._mask_style
+            BLOCK = "▮"   # 마스크 블록 문자
 
             if mask == "full":
-                # 전체 가리기: 모든 글자를 ░ 로 표시 (입력 피드백 없음)
+                # 전체 가리기: 공백은 그대로, 나머지는 블록
                 for ch in target:
-                    self.target_display.insert(tk.END, "░", "pending")
+                    if ch == " ":
+                        self.target_display.insert(tk.END, " ")
+                    else:
+                        self.target_display.insert(tk.END, BLOCK, "mask_pending")
 
             elif mask == "first":
-                # 첫글자만 보이기: 각 단어 첫 글자는 힌트로 표시
+                # 첫글자만 보이기: 단어 첫 글자는 힌트, 공백은 그대로
                 for i, ch in enumerate(target):
+                    if ch == " ":
+                        self.target_display.insert(tk.END, " ")
+                        continue
                     hint = _is_word_start(target, i)
                     if i < len(typed):
                         if typed[i] == ch:
                             self.target_display.insert(tk.END, ch, "correct")
                         else:
-                            self.target_display.insert(tk.END, "░", "wrong")
+                            self.target_display.insert(tk.END, BLOCK, "mask_wrong")
                     elif i == len(typed):
-                        self.target_display.insert(tk.END, ch if hint else "░", "cursor_pos")
+                        self.target_display.insert(
+                            tk.END, ch if hint else BLOCK,
+                            "mask_cursor" if not hint else "mask_cursor")
                     else:
-                        self.target_display.insert(tk.END, ch if hint else "░", "pending")
+                        if hint:
+                            self.target_display.insert(tk.END, ch, "mask_hint")
+                        else:
+                            self.target_display.insert(tk.END, BLOCK, "mask_pending")
 
             else:
-                # block (기본): 맞은 글자만 표시, 나머지 ░
+                # block (기본): 맞은 글자만 표시, 나머지 블록, 공백은 그대로
                 for i, ch in enumerate(target):
+                    if ch == " ":
+                        self.target_display.insert(tk.END, " ")
+                        continue
                     if i < len(typed):
                         if typed[i] == ch:
                             self.target_display.insert(tk.END, ch, "correct")
                         else:
-                            self.target_display.insert(tk.END, "░", "wrong")
+                            self.target_display.insert(tk.END, BLOCK, "mask_wrong")
                     elif i == len(typed):
-                        self.target_display.insert(tk.END, "░", "cursor_pos")
+                        self.target_display.insert(tk.END, BLOCK, "mask_cursor")
                     else:
-                        self.target_display.insert(tk.END, "░", "pending")
+                        self.target_display.insert(tk.END, BLOCK, "mask_pending")
 
         else:  # 기본
             for i, ch in enumerate(target):
@@ -1526,7 +1959,7 @@ class TypingPractice:
     # ── 입력 이벤트 ───────────────────────────────────────────────────────────
 
     def _handle_enter(self, _e):
-        if self.typing_mode.get() == "가리기" and self.practice_indices:
+        if self.typing_mode.get() in ("가리기", "복습") and self.practice_indices:
             if self.completed or self._hidden_revealed:
                 self._rate_and_next(2)   # 보통
         elif self.completed:
@@ -1534,8 +1967,8 @@ class TypingPractice:
         return "break"
 
     def _handle_up(self, _e):
-        """가리기 모드에서 위 방향키로 문장 공개/숨김 토글."""
-        if self.typing_mode.get() != "가리기" or not self.practice_indices:
+        """가리기/복습 모드에서 위 방향키로 문장 공개/숨김 토글."""
+        if self.typing_mode.get() not in ("가리기", "복습") or not self.practice_indices:
             return "break"
         if self.completed:
             return "break"
@@ -1596,6 +2029,7 @@ class TypingPractice:
             self.is_typing  = True
 
         self._refresh_target(typed)
+        self._refresh_input_highlight(typed)
         self._update_stats(typed)
         self._check_completion(typed)
         self._auto_resize(self.input_text)
@@ -1603,7 +2037,7 @@ class TypingPractice:
     def _check_completion(self, typed: str):
         if typed == self._cur_text() and not self.completed:
             self.completed = True
-            if self.typing_mode.get() == "가리기":
+            if self.typing_mode.get() in ("가리기", "복습"):
                 self._show_banner()
                 self._refresh_target(typed)
             self._update_desc_display()
@@ -1741,6 +2175,7 @@ class TypingPractice:
 
         dlg = SentenceDialog(self.root, "현재 문장 편집", text, desc, expl, font_size=self._font_size)
         if dlg.result:
+            self._transfer_srs(text, dlg.result[0])
             self.sentence_data[data_idx] = dlg.result
             self._save_csv()
             self._refresh_sent_tree()
@@ -1829,15 +2264,54 @@ class TypingPractice:
     # ══════════════════════════════════════════════════════════════════════════
 
     def _srs_path(self) -> str | None:
-        """현재 CSV 에 대응하는 .srs.json 경로."""
+        """현재 CSV 에 대응하는 SRS JSON 경로.
+        사용자가 직접 지정한 경우 그 경로를, 아니면 srs/ 폴더 자동 경로를 반환."""
         if not self.current_csv:
             return None
-        return os.path.splitext(self.current_csv)[0] + ".srs.json"
+        custom = self.srs_custom_paths.get(self.current_csv)
+        if custom:
+            return custom
+        srs_dir = os.path.join(os.path.dirname(self.current_csv), "srs")
+        os.makedirs(srs_dir, exist_ok=True)
+        name = os.path.splitext(os.path.basename(self.current_csv))[0] + ".json"
+        return os.path.join(srs_dir, name)
+
+    def _auto_srs_path(self) -> str | None:
+        """자동 경로(srs/ 폴더) 반환 (표시용)."""
+        if not self.current_csv:
+            return None
+        srs_dir = os.path.join(os.path.dirname(self.current_csv), "srs")
+        name = os.path.splitext(os.path.basename(self.current_csv))[0] + ".json"
+        return os.path.join(srs_dir, name)
+
+    def _has_srs(self, csv_path: str) -> bool:
+        """CSV 파일에 연결된 SRS 파일이 존재하면 True."""
+        custom = self.srs_custom_paths.get(csv_path)
+        if custom:
+            return os.path.exists(custom)
+        auto = os.path.join(os.path.dirname(csv_path), "srs",
+                            os.path.splitext(os.path.basename(csv_path))[0] + ".json")
+        return os.path.exists(auto)
 
     def _load_srs(self):
-        """SRS JSON 파일 로드. 없으면 빈 dict."""
+        """SRS JSON 파일 로드. 구 위치(.srs.json, .srs/)는 새 srs/ 폴더로 자동 이전."""
         path = self._srs_path()
-        if path and os.path.exists(path):
+        if not path:
+            self.srs_data = {}
+            return
+        if self.current_csv and not os.path.exists(path):
+            csv_dir = os.path.dirname(self.current_csv)
+            base    = os.path.splitext(os.path.basename(self.current_csv))[0]
+            # 구 경로 1: 옆에 있던 .srs.json
+            old1 = os.path.join(csv_dir, base + ".srs.json")
+            # 구 경로 2: 숨김 .srs/ 폴더
+            old2 = os.path.join(csv_dir, ".srs", base + ".json")
+            for old in (old1, old2):
+                if os.path.exists(old):
+                    os.makedirs(os.path.dirname(path), exist_ok=True)
+                    shutil.move(old, path)
+                    break
+        if os.path.exists(path):
             try:
                 with open(path, "r", encoding="utf-8") as f:
                     self.srs_data = json.load(f)
@@ -1851,11 +2325,21 @@ class TypingPractice:
         path = self._srs_path()
         if not path:
             return
+        existed = os.path.exists(path)
         try:
             with open(path, "w", encoding="utf-8") as f:
                 json.dump(self.srs_data, f, ensure_ascii=False, indent=2)
         except Exception:
             pass
+        # 파일이 새로 생성된 경우 트리의 연동 표시를 갱신
+        if not existed:
+            self.load_tree()
+
+    def _transfer_srs(self, old_text: str, new_text: str):
+        """문장 텍스트가 바뀔 때 SRS 이력을 새 키로 옮긴다."""
+        if old_text != new_text and old_text in self.srs_data:
+            self.srs_data[new_text] = self.srs_data.pop(old_text)
+            self._save_srs()
 
     def _get_srs(self, text: str) -> dict:
         """문장의 SRS 항목 반환. 없으면 기본값 생성."""
@@ -1901,16 +2385,21 @@ class TypingPractice:
             "ease_factor": round(ef, 2),
             "next_review": (date.today() + timedelta(days=ivl)).isoformat(),
             "reps":        reps,
+            "last_rating": rating,
         }
 
     def _rate_and_next(self, rating: int):
-        """SRS 평가 후 다음 문장으로 이동."""
+        """SRS 평가. 다시(0)는 현재 문장 재시작, 나머지는 다음 문장으로 이동."""
         if not self.practice_indices:
             return
         text = self._cur_text()
         self.srs_data[text] = self._apply_sm2(self._get_srs(text), rating)
         self._save_srs()
-        self.next_sentence()
+        self._refresh_sent_tree()
+        if rating == 0:
+            self.reset_current()
+        else:
+            self.next_sentence()
 
     # ══════════════════════════════════════════════════════════════════════════
 

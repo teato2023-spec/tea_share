@@ -1,0 +1,164 @@
+{
+  "I, you, he, she, we, they": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "mine, yours, his, hers": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "this, that, these, those": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "who, what, which": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 1
+  },
+  "one, some, any, none": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "run, eat, think, make": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "am, is, are, was, were": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "can, will, must, should, may": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "have / has + p.p": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "beautiful, cold, heavy": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "many, few, much, little": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "this, that": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 1
+  },
+  "my, your, his, her": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "quickly, slowly, well": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "now, yesterday, soon": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "here, there, everywhere": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "always, often, never": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "very, quite, too, almost": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "In, on, at, under, between": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "at, on, in, before, after": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "to, from, toward, into": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "by, with, for, about, of": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "and, but, or, so, for, yet": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "because, although, if, when, that": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "both A and B / either A or B / not only A but also B": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "a / an": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  },
+  "the": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-14",
+    "reps": 0
+  }
+}

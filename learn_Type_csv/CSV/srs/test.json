@@ -1,0 +1,23 @@
+{
+  "678": {
+    "interval": 3,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-17",
+    "reps": 3,
+    "last_rating": 3
+  },
+  "123": {
+    "interval": 16,
+    "ease_factor": 2.65,
+    "next_review": "2026-03-30",
+    "reps": 3,
+    "last_rating": 3
+  },
+  "456": {
+    "interval": 3,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-17",
+    "reps": 3,
+    "last_rating": 3
+  }
+}
