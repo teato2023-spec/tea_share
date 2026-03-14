@@ -151,7 +151,7 @@ class TypingPractice:
 
     # ── 폰트 ─────────────────────────────────────────────────────────────────
 
-    def _setup_fonts(self, size=22):
+    def _setup_fonts(self, size=14):
         self._font_size = size
         self.fn_strike = Font(family="Malgun Gothic", size=size, overstrike=True)
         self.fn_sm     = Font(family="Malgun Gothic", size=size)
@@ -525,11 +525,6 @@ class TypingPractice:
         tk.Button(nav, text="옵션",     command=self._open_options_window,  **_nb).pack(side=tk.LEFT, padx=4)
         tk.Button(nav, text="편집", command=self._edit_current_sentence, **_nb).pack(side=tk.LEFT, padx=4)
         # RIGHT 쪽은 먼저 pack 한 것이 더 오른쪽에 붙음
-        self._stats_lbl = tk.Label(
-            nav, text="타수: —  |  시간: —",
-            bg="#ecf0f1", fg="#555", font=self.fn_sm
-        )
-        self._stats_lbl.pack(side=tk.RIGHT, padx=8)
         tk.Checkbutton(
             nav, text="랜덤",
             variable=self.random_var, command=self._toggle_random,
@@ -581,26 +576,44 @@ class TypingPractice:
             self._middle, text=" 해석 ", font=self.fn_bold,
             bg="#eaf4fb", padx=10, pady=6, fg="#1a6898"
         )
+        _desc_row = tk.Frame(self._desc_frame, bg="#eaf4fb")
+        _desc_row.pack(fill=tk.X)
         self._desc_lbl = tk.Label(
-            self._desc_frame, text="",
+            _desc_row, text="",
             bg="#eaf4fb", fg="#1a5276",
-            font=self.fn_sm, wraplength=1200,
+            font=self.fn_sm, wraplength=1150,
             anchor="w", justify="left"
         )
-        self._desc_lbl.pack(fill=tk.X)
+        self._desc_lbl.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        self._desc_copy_btn = tk.Button(
+            _desc_row, text="복사", font=self.fn_sm,
+            bg="#b3d9f5", fg="#1a3a5c", relief=tk.FLAT,
+            padx=8, pady=2, cursor="hand2",
+            command=self._copy_desc
+        )
+        self._desc_copy_btn.pack(side=tk.RIGHT, padx=(6, 0))
 
         # 설명 프레임 (별도, 기본 숨김)
         self._explanation_frame = tk.LabelFrame(
             self._middle, text=" 설명 ", font=self.fn_bold,
             bg="#f0fff0", padx=10, pady=6, fg="#1a7a3a"
         )
+        _expl_row = tk.Frame(self._explanation_frame, bg="#f0fff0")
+        _expl_row.pack(fill=tk.X)
         self._explanation_lbl = tk.Label(
-            self._explanation_frame, text="",
+            _expl_row, text="",
             bg="#f0fff0", fg="#1a5226",
-            font=self.fn_sm, wraplength=1200,
+            font=self.fn_sm, wraplength=1150,
             anchor="w", justify="left"
         )
-        self._explanation_lbl.pack(fill=tk.X)
+        self._explanation_lbl.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        self._expl_copy_btn = tk.Button(
+            _expl_row, text="복사", font=self.fn_sm,
+            bg="#b3f5c8", fg="#1a3c1a", relief=tk.FLAT,
+            padx=8, pady=2, cursor="hand2",
+            command=self._copy_explanation
+        )
+        self._expl_copy_btn.pack(side=tk.RIGHT, padx=(6, 0))
 
         # 입력 영역 (target_display 와 같은 방식으로 fill=X, 자동 높이)
         self._input_frame = tk.LabelFrame(
@@ -891,25 +904,8 @@ class TypingPractice:
         self._file_drag_start_y: int = 0
         self._file_drag_moved: bool = False
 
-        tk.Label(
-            win, text="우클릭으로 폴더·파일 관리  |  CSV를 드래그하여 폴더 이동",
-            bg="#ecf0f1", fg="#95a5a6", font=Font(family="Malgun Gothic", size=22),
-            pady=4
-        ).pack(fill=tk.X, padx=6)
-
-        # 드래그 앤 드롭 힌트 레이블
-        _dnd_text = (
-            "📂  CSV 파일을 여기에 드래그하여 가져오기"
-            if HAS_DND else
-            "우클릭 → CSV 가져오기 로 파일 추가"
-        )
-        self._drop_hint = tk.Label(
-            win, text=_dnd_text,
-            bg="#ecf0f1", fg="#95a5a6",
-            font=Font(family="Malgun Gothic", size=9),
-            pady=6, relief=tk.GROOVE, bd=1
-        )
-        self._drop_hint.pack(fill=tk.X, padx=4, pady=(0, 4))
+        # 드래그 앤 드롭 힌트 레이블 (숨김 유지용 더미)
+        self._drop_hint = tk.Label(win, text="", bg="#ecf0f1")
 
         if HAS_DND:
             win.drop_target_register(DND_FILES)
@@ -1769,7 +1765,6 @@ class TypingPractice:
         self._hidden_revealed = False
         self._update_mask_buttons()
         self._hide_banner()
-        self._stats_lbl.config(text="타수: —  |  시간: —")
         self._update_counter()
         self._refresh_target("")   # target_display 도 내부에서 _auto_resize 호출
         # 가리기/복습 모드: 다음 문장에도 설명을 계속 표시
@@ -1797,7 +1792,6 @@ class TypingPractice:
         self.target_display.config(state=tk.DISABLED)
         self.input_text.delete("1.0", tk.END)
         self._counter_lbl.config(text="0 / 0")
-        self._stats_lbl.config(text="타수: —  |  시간: —")
         self._hide_banner()
         self._hide_desc()
         self._hide_explanation()
@@ -1830,6 +1824,22 @@ class TypingPractice:
         if self._desc_visible:
             self._desc_frame.pack_forget()
             self._desc_visible = False
+
+    def _copy_desc(self):
+        text = self._desc_lbl.cget("text")
+        if text:
+            self.root.clipboard_clear()
+            self.root.clipboard_append(text)
+            self._desc_copy_btn.config(text="✓ 복사됨")
+            self.root.after(1500, lambda: self._desc_copy_btn.config(text="복사"))
+
+    def _copy_explanation(self):
+        text = self._explanation_lbl.cget("text")
+        if text:
+            self.root.clipboard_clear()
+            self.root.clipboard_append(text)
+            self._expl_copy_btn.config(text="✓ 복사됨")
+            self.root.after(1500, lambda: self._expl_copy_btn.config(text="복사"))
 
     def _show_explanation(self, text: str):
         self._explanation_lbl.config(text=text)
@@ -2048,11 +2058,6 @@ class TypingPractice:
         target  = self._cur_text()
         correct = sum(1 for a, b in zip(typed, target) if a == b)
         acc     = correct / len(typed) * 100
-        elapsed = time.time() - self.start_time
-        cpm     = len(typed) / elapsed * 60 if elapsed > 0 else 0
-        self._stats_lbl.config(
-            text=f"타수: {cpm:.0f} CPM  |  시간: {elapsed:.1f}초"
-        )
 
     # ── 네비게이션 ────────────────────────────────────────────────────────────
 
