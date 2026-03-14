@@ -19,3 +19,24 @@ git add .
 git commit -m "새로운 시작 - 전체 교체"
 git push origin main -f
 
+==============================================================================
+Fugitive 플러그인을 사용하는 경우 (추천)
+만약 vim-fugitive 플러그인이 설치되어 있다면, 훨씬 직관적으로 할 수 있습니다.
+상태창 열기: :G 또는 :Git 입력
+전체 스테이징: 파일 목록 위에서 s 키를 누르거나, 명령어로 :Git add .
+커밋: :Git commit 입력 후 메시지 작성 (작성 후 :wq로 저장)
+강제 푸시 (Force Push):
+명령어 입력: :Git push --force 또는 :Git push -f
+
+한줄로 전부 덮어 올리기
+!git add . && git commit -m "update" && git push origin main -f
+
+G 입력 (Git 상태창 열기)
+파일 목록이 쭉 뜨면, 올리고 싶은 파일 위로 커서를 이동합니다.
+s 키를 누릅니다. (해당 파일만 Stage 됨)
+cc를 눌러 커밋 메시지를 쓰고 저장(:wq)합니다.
+:Git push를 입력합니다.
+
+log파일 보기
+:Git log
+
