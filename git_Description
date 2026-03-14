@@ -40,3 +40,6 @@ cc를 눌러 커밋 메시지를 쓰고 저장(:wq)합니다.
 log파일 보기
 :Git log
 
+github 파일을 로컬 폴더에 리셋 시켜 덮어 씌우기
+git reset --hard origin/main
+
