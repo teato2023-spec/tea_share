@@ -1,0 +1,21 @@
+1.내 컴튜터의 변경 사항 모두 반영하기
+git add .
+git comit -m "내 컴퓨터 파일로 전제 교체"
+
+2. GitHub 서버로 강제 업로드(Force Push)
+가장 중요한 단계입니다. 일반적인 push가 아니라 -f (force) 옵션을 붙여서 서버의 내용을 내 내용으로 강제 교체합니다.
+git push origin main -f
+
+=============================================================================
+1.로컬의 Git 설정 초기화:
+rm -rf .git  # 기존 연결 기록 삭제 (Windows는 폴더 옵션에서 .git 폴더 삭제)
+git init      # 새로 시작
+
+2.GitHub 주소 다시 연결:
+git remote add origin [내-저장소-주소]
+
+3. 강제로 덮어쓰기
+git add .
+git commit -m "새로운 시작 - 전체 교체"
+git push origin main -f
+
