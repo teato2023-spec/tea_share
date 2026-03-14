@@ -103,5 +103,12 @@
     "next_review": "2026-03-15",
     "reps": 1,
     "last_rating": 2
+  },
+  "deny": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 1,
+    "last_rating": 2
   }
 }
