@@ -5,5 +5,634 @@
     "next_review": "2026-03-16",
     "reps": 1,
     "last_rating": 2
+  },
+  "abandon": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "absorb": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "accurate": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "achieve": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "adapt": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "admit": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "affect": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "agree": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "allow": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "amount": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "analyze": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "apologize": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "appear": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "apply": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "argue": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "assign": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "assist": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "attach": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "attempt": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "attend": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "attract": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "balance": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "behave": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "belong": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "blame": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "block": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "carry": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "cause": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "change": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "charge": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "choose": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "claim": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "collect": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "combine": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "compare": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "compete": {
+    "interval": 3,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-18",
+    "reps": 2,
+    "last_rating": 2
+  },
+  "complete": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "confirm": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "connect": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "continue": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "control": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "correct": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "create": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "decrease": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "define": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "deliver": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "demand": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "deny": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "design": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "determine": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "divide": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "doubt": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "earn": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "eliminate": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "emphasize": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "encounter": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "ensure": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "establish": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "evaluate": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "examine": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "expand": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "express": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "extend": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "face": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "facilitate": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "feature": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "follow": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "gain": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "generate": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "identify": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "imagine": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "implement": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "include": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "increase": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "indicate": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "introduce": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "investigate": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "limit": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "maintain": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "measure": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "modify": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "monitor": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "obtain": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "offer": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "operate": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "overcome": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "participate": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "perform": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "permit": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "point": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "predict": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "preserve": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "produce": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "promote": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "propose": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
+  },
+  "publish": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "qualify": {
+    "interval": 1,
+    "ease_factor": 2.35,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 1
+  },
+  "react": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-15",
+    "reps": 0
+  },
+  "region": {
+    "interval": 1,
+    "ease_factor": 2.5,
+    "next_review": "2026-03-16",
+    "reps": 1,
+    "last_rating": 2
   }
 }
